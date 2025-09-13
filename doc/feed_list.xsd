@@ -1,0 +1,54 @@
+<xs:element name="feed_list"
+	    namespace="ez_syndication">
+  <xs:complexType>
+    <xs:attribute name="feed_version"
+                  type="xs:integer"
+                  use="required" />
+    <xs:attribute name="created_ts"
+                  type="xs:integer"
+                  use="required" />
+    <xs:attribute name="syndication_version"
+                  type="xs:integer"
+                  use="required" />
+    <xs:sequence>
+      <xs:element name="feed_item"
+                  namespace="ez_syndication" />
+	<xs:complexType>
+	  <xs:attribute name="object_remote_id"
+			type="xs:string"
+			use="required" />
+	  <xs:attribute name="publish_ts"
+			type="xs:integer"
+			use="required" />
+	  <xs:attribute name="version"
+			type="xs:integer"
+			use="required" />
+	  <xs:attribute name="languages"
+			type="xs:string"
+			use="required" />
+	  <xs:attribute name="node_remote_id"
+			type="xs:string"
+			use="required" />
+	  <xs:attribute name="default_language"
+			type="xs:string"
+			use="required" />
+	  <xs:sequence>
+	    <xs:element name="name"
+			namespace="ez_syndication">
+	      <xs:complexType>
+		<xs:attribute name="language"
+				type="xs:string"
+				use="required" />
+	      </xs:complexType>
+	    </xs:element>
+	  </xs:sequence>
+	</xs:complexType>
+      </xs:element>
+    <xs:sequence>
+  </xs:complexType>
+</xs:element>
+
+
+
+
+

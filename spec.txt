@@ -1,0 +1,7 @@
+<h2>Serializing objects</h2>
+
+<ol>
+<li>Create feed objects as cached xml + binary files. Uses eZ Publish to create 1 file / export object </li>
+<li>Make file available through SOAP inteface</li>
+</ol>
+

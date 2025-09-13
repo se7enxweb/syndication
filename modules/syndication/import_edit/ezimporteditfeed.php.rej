@@ -1,0 +1,22 @@
+***************
+*** 87,92 ****
+          $feedListDocument = $xml->domTree( $response->value() );
+          $this->FeedList = $this->createArrayFromDOMNode( $feedListDocument->root() );
+  
+          return eZImportEditWizard::process();
+      }
+  
+--- 88,100 ----
+          $feedListDocument = $xml->domTree( $response->value() );
+          $this->FeedList = $this->createArrayFromDOMNode( $feedListDocument->root() );
+  
++         $request = new eZSOAPRequest( "hostID", "http://ez.no/syndication" );
++         $response = $client->send( $request );
++ 
++         $syndicationImport = $this->attribute( 'syndication_import' );
++         $syndicationImport->setAttribute( 'host_id', $response->value() );
++         $syndicationImport->sync();
++ 
+          return eZImportEditWizard::process();
+      }
+  

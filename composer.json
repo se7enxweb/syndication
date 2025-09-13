@@ -1,0 +1,30 @@
+{
+    "name": "se7enxweb/syndication",
+    "description": "Exponential extension which provides for a soap based sync of content object from one ezsite to another. Great for all smart developers!",
+    "type": "ezpublish-legacy-extension",
+    "keywords": [ "eZ Publish", "eZ Publish Legacy", "eZ Publish Platform", "syndication", "soap", "sync", "cronjob" ],
+    "homepage": "https://github.com/se7enxweb/syndication",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name" : "7x",
+            "homepage": "https://se7enx.com",
+            "email": "info@se7enx.com",
+            "role": "Maintainer"
+        },
+	{
+            "name" : "eZ Systems",
+            "homepage": "https://ez.no",
+            "email": "info@ez.no",
+            "role": "Creator"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.0.0",
+        "se7enxweb/ezpublish-legacy-installer": "*"
+    },
+    "extra": {
+        "ezpublish-legacy-extension-name": "syndication"
+    }
+}
