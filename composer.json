@@ -1,6 +1,6 @@
 {
     "name": "se7enxweb/syndication",
-    "description": "Exponential extension which provides for a soap based sync of content object from one ezsite to another. Great for all smart developers!",
+    "description": "Exponential syndication extension provides a Soap based client + server solution for content syncing from one installation of an Exponential site to another separate site. This provides for centralized user registration content syncing. Great for all smart developers!",
     "type": "ezpublish-legacy-extension",
     "keywords": [ "eZ Publish", "eZ Publish Legacy", "eZ Publish Platform", "syndication", "soap", "sync", "cronjob" ],
     "homepage": "https://github.com/se7enxweb/syndication",
