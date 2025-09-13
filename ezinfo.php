@@ -46,10 +46,11 @@ class syndicationInfo
     function info()
     {
         return array( 'name' => "Syndication",
-                      'version' => "0.7",
-                      'copyright' => "Copyright © 2008 eZ systems",
+                      'version' => "1.1.0",
+                      'copyright' => "Copyright © 1998 - 2025 7x and 2008 eZ systems",
                       'license' => "GPL" );
     }
 }
 
 ?>
+
