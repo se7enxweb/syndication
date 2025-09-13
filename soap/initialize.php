@@ -85,7 +85,6 @@ function fetchSyndicationFeedList()
     }
 
     return $doc->saveXML();
-    //return $doc->toString();
 }
 
 /*!

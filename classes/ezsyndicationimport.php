@@ -276,7 +276,8 @@ class eZSyndicationImport extends eZPersistentObject
         {
             return array();
         }
-        $feedExportItem = unserialize( base64_decode( $response->value() ) );
+
+        $feedExportItem = unserialize( $response->value() );
 
         foreach( $feedExportItem as $feedExport )
         {
@@ -529,7 +530,7 @@ class eZSyndicationImport extends eZPersistentObject
 
      \param import id, optional, current object if none specified
     */
-    function removeImport( $ID = false )
+    public static function removeImport( $ID = false )
     {
         if ( $ID !== false )
         {

@@ -93,9 +93,7 @@ class eZImportEditName extends eZImportEditWizard
         $client = $syndicationImport->attribute( 'soap_client' );
         $request = new eZSOAPRequest( "fetchSyndicationFeedList", "http://ez.no/syndication" );
         $response = $client->send( $request );
-//7x
-// var_dump( $response );
-//	echo "<hr>\n\n";
+
 	if( !is_int( $response ) )
 	{
            $responseCode = $response->faultCode();
@@ -115,15 +113,11 @@ class eZImportEditName extends eZImportEditWizard
                                            array( '%server' => $server ) );
             return false;
         }
-	else
-	{
-	}
 
         // Get server HostID
         $request = new eZSOAPRequest( "hostID", "http://ez.no/syndication" );
         $response = $client->send( $request );
-	//7x
-	// var_dump($response);
+
         if ( is_int( $response ) && $responseCode == false )
         {
             $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',

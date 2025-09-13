@@ -79,9 +79,10 @@ while( $feedItemStatusList = eZSyndicationFeedItemStatus::fetchList( array( arra
     foreach( $feedItemStatusList as $feedItemStatus )
     {
         $db->begin();
-        if ( $feedItem = $feedItemStatus->attribute( 'feed_item' ) )
+	if ( $feedItem = $feedItemStatus->attribute( 'feed_item' ) )
         {
             $result = $feedItem->import();
+
             if ( $result )
             {
                 $objectCount = $feedItem->importObjectCount();
@@ -98,10 +99,12 @@ while( $feedItemStatusList = eZSyndicationFeedItemStatus::fetchList( array( arra
         }
         else
         {
-            eZDebug::writeError( 'Could not find eZSyndicationFeedItem: ' . $feedItem->attribute( 'id' ) );
+            // eZDebug::writeError( 'Could not find eZSyndicationFeedItem: ' . $feedItem->attribute( 'id' ) );
+	    // eZDebug::writeError( 'Could not find eZSyndicationFeedItem: null' );
+	    $cli->output( "Could not find eZSyndicationFeedItem feedItem in above conditional test was returned  null\n" );
+	    exit;
         }
     }
 }
-
 
 ?>

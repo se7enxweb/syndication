@@ -238,8 +238,6 @@ class eZSyndicationFeedItem extends eZPersistentObject
 
             return false;
         }
-
-        $objectDefinition = base64_decode( $objectDefinition );
         return $objectDefinition;
     }
 
@@ -274,7 +272,7 @@ class eZSyndicationFeedItem extends eZPersistentObject
                                        'use_hidden_status' => 'useHiddenStatus' );
         foreach( $optionDefinitionList as $optionKey => $optionName )
         {
-            $$optionName = isset( $options[$optionKey] ) ? $options[$optionKey] : $syndicationImport->option( $optionKey );
+            $optionName = isset( $options[$optionKey] ) ? $options[$optionKey] : $syndicationImport->option( $optionKey );
         }
         $this->setOption( 'use_hidden_status', $useHiddenStatus );
 
@@ -293,11 +291,12 @@ class eZSyndicationFeedItem extends eZPersistentObject
             $db->commit();
             return false;
         }
-
         $dom = new DOMDocument( '1.0', 'utf-8' );
         $success = $dom->loadXML( $objectDefinition );
-        if ( !$success )
+	if ( !$success )
         {
+	die('fault');
+
             eZDebug::writeDebug( $objectDefinition, 'unable to parse object definition' );
             return false;
         }

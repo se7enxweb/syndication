@@ -60,10 +60,11 @@ class eZSyndicationFeedCacheManager
         $this->CacheFileName .= $feedID . '.php';
         $this->BaseCachePath = eZDir::path( array( eZSys::storageDirectory(), 'syndication', 'feed' ) );
         $filename = eZDir::path( array( $this->BaseCachePath, $this->CacheFileName ) );
+
         $fileContents = false;
         if ( file_exists( $filename ) )
         {
-            $fileContents = eZFile::getContents( $filename );
+            $fileContents = file_get_contents( $filename );
         }
         if ( $fileContents )
         {
@@ -220,7 +221,7 @@ class eZSyndicationFeedCacheManager
         $simpleFileListDomNode = $dom->createElement( 'simple-file-list' );
         foreach( $this->SimpleFileList[$this->SimpleFileListKey] as $key => $filename )
         {
-            $simpleFileNode = $dom->createElement( 'simple-file', base64_encode( eZFile::getContents( $filename ) ) );
+            $simpleFileNode = $dom->createElement( 'simple-file', base64_encode( file_get_contents( $filename ) ) );
             $simpleFileNode->setAttribute( 'key', $key );
             $simpleFileNode->setAttribute( 'suffix', eZFile::suffix( $filename ) );
             $simpleFileListDomNode->appendChild( $simpleFileNode );
@@ -250,7 +251,7 @@ class eZSyndicationFeedCacheManager
 
      \return Serialized object
     */
-    function readObjectCache( $feedID, $remoteID )
+    public static function readObjectCache( $feedID, $remoteID )
     {
         $syndicationCache = eZSyndicationFeedCacheManager::initialize( $feedID );
         $cacheInfo = $syndicationCache->cacheInfo( $remoteID );
@@ -275,7 +276,7 @@ class eZSyndicationFeedCacheManager
                 return eZSyndicationFeedCacheManager::OBJECT_INVALID;
             }
         }
-        return eZFile::getContents( eZDir::path( array( $syndicationCache->objectCachePath( $remoteID ), $remoteID ) ) );
+        return file_get_contents( eZDir::path( array( $syndicationCache->objectCachePath( $remoteID ), $remoteID ) ) );
     }
 
     /*!
@@ -336,7 +337,7 @@ class eZSyndicationFeedCacheManager
                 return eZSyndicationFeedCacheManager::OBJECT_INVALID;
             }
         }
-        return eZFile::getContents( eZDir::path( array( $syndicationCache->objectCachePath( $relatedRemoteID ), $relatedRemoteID ) ) );
+        return file_get_contents( eZDir::path( array( $syndicationCache->objectCachePath( $relatedRemoteID ), $relatedRemoteID ) ) );
     }
 
     /*!

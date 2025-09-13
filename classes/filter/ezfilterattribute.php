@@ -56,7 +56,7 @@ class eZFilterAttribute extends eZSyndicationFilter
     {
         $row['type'] = eZFilterAttribute::NAME;
         $row['class_name'] = 'eZFilterAttribute';
-        $this->eZSyndicationFilter( $row );
+        parent::__construct( $row );
     }
 
     /*!
