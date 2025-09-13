@@ -295,8 +295,6 @@ class eZSyndicationFeedItem extends eZPersistentObject
         $success = $dom->loadXML( $objectDefinition );
 	if ( !$success )
         {
-	die('fault');
-
             eZDebug::writeDebug( $objectDefinition, 'unable to parse object definition' );
             return false;
         }
