@@ -51,7 +51,7 @@ class eZSyndicationFeedItemExport extends eZPersistentObject
     */
     function __construct($row = array() )
     {
-        $this->eZPersistentObject( $row );
+        parent::__construct( $row );
     }
 
     static function definition()

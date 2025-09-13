@@ -52,7 +52,7 @@ class eZSyndicationFeedItem extends eZPersistentObject
     */
     function __construct( $row = array() )
     {
-        $this->eZPersistentObject( $row );
+        parent::__construct( $row );
     }
 
     static function definition()
@@ -262,7 +262,7 @@ class eZSyndicationFeedItem extends eZPersistentObject
 
         if ( !$isRelatedObject )
         {
-            $feedItemStatus->setAttribute( 'status', eZSyndicationFeedItemStatus::STATUS_INSTALLING );
+	    $feedItemStatus->setAttribute( 'status', eZSyndicationFeedItemStatus::STATUS_INSTALLING );
             $feedItemStatus->sync();
         }
 

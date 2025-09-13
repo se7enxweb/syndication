@@ -51,7 +51,7 @@ class eZSyndicationFilter extends eZPersistentObject
     */
     function __construct( $row )
     {
-        $this->eZPersistentObject( $row );
+        parent::__construct( $row );
         $this->Row = $row;
     }
 
