@@ -20,7 +20,7 @@ Tested and Working Features
 
 7x in 2025 was the first to release the eZ Systems extension syndication for public download and then upgrade it, maintain it and document it for long term wide spread usage to resume. 
 
-7x is a web design, development, support and hosting company from North America operating for over 24 years. Formerly known as Brookins Consulting a leader in both the eZ Publish Partner Community and eZ Publish Open Source Project. 7x supports cutting edge development and support for the eZ Publish Community and eZ Publish Ecosystem.
+7x is a web design, development, support and hosting company from North America operating for over 24 years. Formerly known as Brookins Consulting a leader in both the eZ Publish Partner Community and eZ Publish Open Source Project. 7x supports cutting edge development and support for the Exponential Community and eZ Publish Ecosystem.
 
 From: [https://se7enx.com/](https://se7enx.com/)
 
