@@ -4,7 +4,9 @@
 
 2. Import the DB definition in <exponential>/<extension dir>/syndication/sql/mysql.sql
 
-3. Enable the extension in the admin interface, or add to `settings/override/site.ini.append.php`
+3. Optional but recommended. Install the provided code diff changes documented into a kernel override class (a great feature to add to this solution in the future), [kernel_patch/addrelated.diff](kernel_patch/addrelated.diff). We recommend a kernel override class instead of manually patching the kernel which is a poor long term solution which affects future upgrades, maintenance and support.
+
+4. Enable the extension in the admin interface, or add to `settings/override/site.ini.append.php`
 `   [ExtensionSettings]
    ActiveExtensions[]=syndication`
 
