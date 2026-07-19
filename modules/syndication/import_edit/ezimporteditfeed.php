@@ -68,20 +68,18 @@ class eZImportEditFeed extends eZImportEditWizard
             $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit', 'Warning, server is not valid URL !' );
         }
 
-        $client = new eZSOAPClient( $url['host'],
-                                    isset( $url['path'] ) ? $url['path'] : '/',
-                                    isset( $url['port'] ) ? $url['port'] : 80,
-                                    isset( $url['scheme'] ) && $url['scheme'] === 'https' );
+        $client = $syndicationImport->attribute( 'soap_client' );
         $request = new eZSOAPRequest( "fetchSyndicationFeedList",
                                       "http://ez.no/syndication" );
         $response = $client->send( $request );
 
-        if ( $response->faultCode() )
+        if ( $response->faultCode() || $response->value() === false || $response->value() === '' )
         {
             $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
                                            'Warning, SOAP feed list request to "%server" did not return a valid result',
                                            '',
-                                           array( '%server' => $server ) );
+                                           array( '%server' => $syndicationImport->attribute( 'server' ) ) );
+            return eZImportEditWizard::process();
         }
 
         $dom = new DOMDocument( '1.0', 'utf-8' );

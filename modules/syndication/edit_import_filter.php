@@ -60,8 +60,7 @@ else if( $http->hasPostVariable( 'Cancel' ) )
     return $module->redirectToView( 'import_edit');
 }
 
-include_once( 'kernel/common/template.php' );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $filter->setEditTPLVariables( $tpl );
 $tpl->setVariable( 'import_filter', $importFilter );
 $tpl->setVariable( 'filter', $filter );

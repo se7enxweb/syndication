@@ -80,6 +80,17 @@ class eZImportEditName extends eZImportEditWizard
         }
         $syndicationImport->setAttribute( 'server', $server );
 
+        $optionArray = $syndicationImport->attribute( 'option_array' );
+        if ( $this->HTTP->hasPostVariable( 'Login' ) )
+        {
+            $optionArray['login'] = trim( $this->HTTP->postVariable( 'Login' ) );
+        }
+        if ( $this->HTTP->hasPostVariable( 'Password' ) )
+        {
+            $optionArray['password'] = $this->HTTP->postVariable( 'Password' );
+        }
+        $syndicationImport->setAttribute( 'options', serialize( $optionArray ) );
+
         $url = parse_url( $server );
 
         if ( !isset( $url['scheme'] ) ||
@@ -98,14 +109,15 @@ class eZImportEditName extends eZImportEditWizard
 	{
            $responseCode = $response->faultCode();
            $responseValue = $response->value();
-           $this->TPL->setVariable( 'response', $response->value() );
+           $this->TPL->setVariable( 'response', $responseValue );
 	}
 	else
 	{
 	   $responseCode = false;
+           $responseValue = false;
 	}
 
-        if ( is_int( $response ) && $responseCode == false )
+        if ( is_int( $response ) || $responseCode !== false || $responseValue === false || $responseValue === '' )
         {
             $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
                                            'Warning, SOAP feed list request to "%server" did not return a valid result',
@@ -118,7 +130,8 @@ class eZImportEditName extends eZImportEditWizard
         $request = new eZSOAPRequest( "hostID", "http://ez.no/syndication" );
         $response = $client->send( $request );
 
-        if ( is_int( $response ) && $responseCode == false )
+        if ( is_int( $response ) ||
+             ( !is_int( $response ) && ( $response->faultCode() !== false || $response->value() === false || $response->value() === '' ) ) )
         {
             $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
                                            'Warning, SOAP feed list request to "%server" did not return a valid result #2',

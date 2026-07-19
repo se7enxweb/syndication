@@ -199,6 +199,11 @@ class eZImportEditWizard extends eZWizardBase
             }
         }
 
+        if ( $wizardClass->hasVariable( 'import_id' ) && $wizardClass->variable( 'import_id' ) )
+        {
+            $wizardClass->WizardURL = '/syndication/import_edit/' . (int)$wizardClass->variable( 'import_id' );
+        }
+
         return $wizardClass;
     }
 }

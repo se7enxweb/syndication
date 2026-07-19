@@ -64,8 +64,7 @@ else if ( $http->hasPostVariable( 'Remove' ) &&
 
 $importList = eZSyndicationImport::fetchList( $offset );
 
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $tpl->setVariable( 'import_list', $importList );
 
 $Result = array();

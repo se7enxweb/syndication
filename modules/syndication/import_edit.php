@@ -45,8 +45,7 @@
 
 $module = $Params['Module'];
 
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 
 $wizardClass = eZImportEditWizard::instance( $tpl, $module, $Params );
 

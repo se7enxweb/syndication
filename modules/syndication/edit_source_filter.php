@@ -59,8 +59,7 @@ else if ( $http->hasPostVariable( 'Cancel' ) )
                                     array( $sourceFilter->attribute( 'feed_source_id' ) ) );
 }
 
-include_once( 'kernel/common/template.php' );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $filter->setEditTPLVariables( $tpl );
 $tpl->setVariable( 'source_filter', $sourceFilter );
 $tpl->setVariable( 'filter', $filter );

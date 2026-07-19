@@ -95,8 +95,7 @@ $feedStatusList = $import->fetchItemStatusList( $statusCondFilter,
                                                 25 );
 $feedStatusListCount = $import->fetchItemStatusListCount( $statusCondFilter );
 
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $tpl->setVariable( 'import', $import );
 $tpl->setVariable( 'statusFilter', $statusFilter );
 $tpl->setVariable( 'view_parameters', $viewParameters );

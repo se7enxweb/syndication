@@ -78,8 +78,7 @@ switch( (int)$step )
     } break;
 }
 
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $tpl->setVariable( 'syndication_feed', $syndicationFeed );
 $tpl->setVariable( 'feed_id', $feedID );
 $tpl->setVariable( 'step', $step );

@@ -85,8 +85,7 @@ foreach( $syndicationINI->variable( 'SyndicationFilters', 'FilterArray' ) as $fi
                             'name' => eval( 'return ' . $filterClassName . '::name();' ) );
 }
 
-include_once( 'kernel/common/template.php' );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $tpl->setVariable( 'feed_source', $feedSource );
 $tpl->setVariable( 'filter_array', $filterArray );
 $tpl->setVariable( 'step', 3 );

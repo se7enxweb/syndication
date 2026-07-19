@@ -76,8 +76,7 @@ else if ( $http->hasPostVariable( 'Cancel' ) )
     return $module->redirectToView( 'list' );
 }
 
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $tpl->setVariable( 'syndication_feed', $syndicationFeed );
 
 $Result = array();

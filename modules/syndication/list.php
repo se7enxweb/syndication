@@ -68,8 +68,7 @@ else if ( $http->hasPostVariable( 'RemoveButton' ) &&
 
 $feedList = eZSyndicationFeed::fetchList( $offset, $limit );
 
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 $tpl->setVariable( 'feed_list', $feedList );
 
 $Result = array();

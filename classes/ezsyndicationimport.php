@@ -150,10 +150,28 @@ class eZSyndicationImport extends eZPersistentObject
         {
             case 'soap_client':
             {
+                $url = parse_url( $this->attribute( 'server' ) );
                 $retVal = new eZSOAPClient( $this->attribute( 'server_host' ),
                                             $this->attribute( 'server_path' ),
                                             $this->attribute( 'server_port' ),
                                             $this->attribute( 'server_scheme' ) === 'https' );
+                $options = $this->attribute( 'option_array' );
+                if ( isset( $url['user'] ) )
+                {
+                    $retVal->setLogin( $url['user'] );
+                }
+                elseif ( isset( $options['login'] ) && $options['login'] !== '' )
+                {
+                    $retVal->setLogin( $options['login'] );
+                }
+                if ( isset( $url['pass'] ) )
+                {
+                    $retVal->setPassword( $url['pass'] );
+                }
+                elseif ( isset( $options['password'] ) && $options['password'] !== '' )
+                {
+                    $retVal->setPassword( $options['password'] );
+                }
             } break;
 
             case 'installed_count':
@@ -209,8 +227,9 @@ class eZSyndicationImport extends eZPersistentObject
             case 'server_scheme':
             {
                 $url = parse_url( $this->attribute( 'server' ) );
+                $defaultPort = isset( $url['scheme'] ) && $url['scheme'] === 'https' ? 443 : 80;
                 $defaultArray = array( 'host' => '',
-                                       'port' => 80,
+                                       'port' => $defaultPort,
                                        'path' => '/' );
                 $attr = substr( $attr, 7 );
                 $retVal = isset( $url[$attr] ) ? $url[$attr] : $defaultArray[$attr];

@@ -41,8 +41,7 @@
 */
 
 $http = eZHttpTool::instance();
-include_once( "kernel/common/template.php" );
-$tpl = templateInit();
+$tpl = eZTemplate::factory();
 
 $Result = array();
 $Result['content'] = $tpl->fetch( "design:syndication/menu.tpl" );
