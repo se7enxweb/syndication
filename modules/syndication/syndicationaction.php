@@ -44,6 +44,8 @@
 
 */
 
+
+if ( !class_exists( 'SyndicationAction', false ) ) {
 class SyndicationAction
 {
     /*!
@@ -85,5 +87,7 @@ class SyndicationAction
     var $HTTP;
     var $Module;
 }
+}
+
 
 ?>
