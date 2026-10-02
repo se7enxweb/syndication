@@ -42,11 +42,11 @@ class syndicationInfo
 {
     public static function info()
     {
-        return array( 'name' => "<a href='https://github.com/se7enxweb/syndication'>Syndication</a>",
-                      'version' => "1.2.0",
-                      'copyright' => "Copyright © 1998 - 2025 7x and 2008 eZ systems",
-                      'License' => "GNU General Public License v2.0 (or later)",
-                      'info_url' => "https://github.com/se7enxweb/syndication");
+        return array( 'Name' => "<a href='https://github.com/se7enxweb/syndication'>Syndication</a>",
+                      'Version' => "1.3.1",
+                      'Copyright' => "Copyright © 1998 - 2025 7x and 2008 eZ systems",
+                      'License' => "GNU General Public License v2.0 (or any later version)",
+                      'Info_url' => "https://github.com/se7enxweb/syndication");
     }
 }
 
