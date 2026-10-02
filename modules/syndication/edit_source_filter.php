@@ -3,6 +3,7 @@
 //
 // Created on: <04-Oct-2004 12:53:34 kk>
 //
+// Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
 // Copyright (C) 1999-2008 eZ Systems AS. All rights reserved.
 //
 // This source file is part of the eZ Publish (tm) Open Source Content
