@@ -1,4 +1,5 @@
 <?php
+// @description Update the caches of the syndication export feeds, feed by feed
 //
 // Definition of SyndicationExport class
 //

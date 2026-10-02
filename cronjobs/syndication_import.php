@@ -1,4 +1,5 @@
 <?php
+// @description Fetch the new items of every syndication import feed
 //
 // Created on: <31-May-2006 15:08:00 hovik>
 //
