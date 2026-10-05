@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.4
+
+- Removed: stray .DS_Store files and a leftover patch reject (modules/syndication/import_edit/ezimporteditfeed.php.rej); .gitignore keeps them out.
+
 ## 1.3.3
 
 Fixed
