@@ -44,7 +44,7 @@ class syndicationInfo
     public static function info()
     {
         return array( 'Name' => "<a href='https://github.com/se7enxweb/syndication'>Syndication</a>",
-                      'Version' => "1.3.2",
+                      'Version' => "1.3.3",
                       'Copyright' => "Copyright © 1998 - 2025 7x and 2008 eZ systems",
                       'License' => "GNU General Public License v2.0 (or any later version)",
                       'Info_url' => "https://github.com/se7enxweb/syndication");
