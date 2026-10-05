@@ -1,82 +1,93 @@
 <?php
 //
-// Definition of List class
-//
-// Created on: <12-Sep-2004 16:41 kk>
-//
 // Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
 // Copyright (C) 1999-2008 eZ Systems AS. All rights reserved.
 //
-// This source file is part of the eZ Publish (tm) Open Source Content
-// Management System.
-//
 // This file may be distributed and/or modified under the terms of the
-// "GNU General Public License" version 2 as published by the Free
-// Software Foundation and appearing in the file LICENSE.GPL included in
-// the packaging of this file.
-//
-// Licencees holding valid "eZ Publish professional licences" may use this
-// file in accordance with the "eZ Publish professional licence" Agreement
-// provided with the Software.
-//
-// This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING
-// THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-// PURPOSE.
-//
-// The "eZ Publish professional licence" is available at
-// http://ez.no/products/licences/professional/. For pricing of this licence
-// please contact us via e-mail to licence@ez.no. Further contact
-// information is available at http://ez.no/home/contact/.
-//
-// The "GNU General Public License" (GPL) is available at
-// http://www.gnu.org/copyleft/gpl.html.
-//
-// Contact licence@ez.no if any conditions of this licencing isn't clear to
-// you.
+// "GNU General Public License" version 2 (or any later version).
 //
 
 /*! \file list.php
+    The export feeds: filter, sort, page, create, remove (with a confirmation step).
 */
 
-/*!
-  \class List list.php
-  \brief The class List does
-
-*/
-
-$module =& $Params["Module"];
-$offset = $Params['Offset'];
-$limit = 15;
-
+$module = $Params['Module'];
+if ( $redirect = eZSyndicationUI::redirectIfNotInstalled( $module ) )
+{
+    return $redirect;
+}
 $http = eZHTTPTool::instance();
+$vp = eZSyndicationUI::listParameters( $Params, array( 'name', 'id', 'enabled' ) );
+$confirmList = array();
 
-if ( $http->hasPostVariable( 'CreateButton' ) &&
-          eZSyndicationFeed::canCreate() )
+if ( $http->hasPostVariable( 'CreateButton' ) && eZSyndicationFeed::canCreate() )
 {
     $feed = eZSyndicationFeed::create();
     $feed->store();
 
     return $module->redirectToView( 'edit', array( $feed->attribute( 'id' ) ) );
 }
-else if ( $http->hasPostVariable( 'RemoveButton' ) &&
-          eZSyndicationFeed::canRemove() )
+else if ( $http->hasPostVariable( 'FilterButton' ) )
 {
-    foreach ( $http->postVariable( 'RemoveFeedIDArray' ) as $feedID )
+    $vp['q'] = trim( (string)$http->postVariable( 'Filter' ) );
+    $vp['offset'] = 0;
+    return $module->redirectTo( eZSyndicationUI::listURL( 'list', $vp ) );
+}
+else if ( $http->hasPostVariable( 'RemoveButton' ) && eZSyndicationFeed::canRemove() )
+{
+    // Step one: show what would go, remove nothing.
+    $ids = $http->hasPostVariable( 'RemoveFeedIDArray' ) ? (array)$http->postVariable( 'RemoveFeedIDArray' ) : array();
+    foreach ( $ids as $feedID )
     {
-        eZSyndicationFeed::removeFeed( $feedID );
+        $feed = eZSyndicationFeed::fetch( (int)$feedID );
+        if ( $feed )
+        {
+            $confirmList[] = $feed;
+        }
+    }
+    if ( !$confirmList )
+    {
+        eZSyndicationUI::notice( 'warning', ezpI18n::tr( 'extension/syndication', 'Select at least one feed to remove.' ) );
+        return $module->redirectTo( eZSyndicationUI::listURL( 'list', $vp ) );
     }
 }
+else if ( $http->hasPostVariable( 'ConfirmRemoveButton' ) && eZSyndicationFeed::canRemove() )
+{
+    $removed = 0;
+    $ids = $http->hasPostVariable( 'RemoveFeedIDArray' ) ? (array)$http->postVariable( 'RemoveFeedIDArray' ) : array();
+    foreach ( $ids as $feedID )
+    {
+        if ( eZSyndicationFeed::removeFeed( (int)$feedID ) )
+        {
+            ++$removed;
+        }
+    }
+    eZSyndicationUI::notice( 'feedback', ezpI18n::tr( 'extension/syndication', '%count feeds were removed.', null, array( '%count' => $removed ) ) );
+    return $module->redirectTo( eZSyndicationUI::listURL( 'list', $vp, array( 'offset' => 0 ) ) );
+}
 
-$feedList = eZSyndicationFeed::fetchList( $offset, $limit );
+$all = eZPersistentObject::fetchObjectList( eZSyndicationFeed::definition(), null,
+                                            array( 'status' => eZSyndicationFeed::STATUS_PUBLISHED ) );
+$total = 0;
+$feedList = eZSyndicationUI::page( $all, $vp, array( 'name', 'identifier', 'public_comment' ), $total );
 
 $tpl = eZTemplate::factory();
 $tpl->setVariable( 'feed_list', $feedList );
+$tpl->setVariable( 'total', $total );
+$tpl->setVariable( 'all_count', is_array( $all ) ? count( $all ) : 0 );
+$tpl->setVariable( 'vp', $vp );
+$tpl->setVariable( 'view_parameters', array( 'offset' => $vp['offset'], 'q' => rawurlencode( $vp['q'] ), 'sort' => $vp['sort'], 'order' => $vp['order'] ) );
+$tpl->setVariable( 'confirm_list', $confirmList );
+$tpl->setVariable( 'notices', eZSyndicationUI::takeNotices() );
+$tpl->setVariable( 'can_create', eZSyndicationFeed::canCreate() );
+$tpl->setVariable( 'can_remove', eZSyndicationFeed::canRemove() );
+$tpl->setVariable( 'can_edit', eZSyndicationFeed::canEdit() );
 
 $Result = array();
-$Result['content'] = $tpl->fetch( "design:syndication/list.tpl" );
+$Result['content'] = $tpl->fetch( 'design:syndication/list.tpl' );
 $Result['path'] = array( array( 'url' => 'syndication/menu',
-                                'text' => ezpI18n::tr( 'syndication/list', 'Menu' ) ),
+                                'text' => ezpI18n::tr( 'extension/syndication', 'Syndication' ) ),
                          array( 'url' => false,
-                                'text' => ezpI18n::tr( 'syndication/list', 'List' ) ) );
+                                'text' => ezpI18n::tr( 'extension/syndication', 'Feeds' ) ) );
 
 ?>

@@ -52,6 +52,22 @@ if ( isset( $userParameters['generate_drafts'] ) )
 
 if ( $http->hasPostVariable( 'AddFilter' ) )
 {
+    if ( eZSyndicationFilter::filterClassName( $http->postVariable( 'FilterType' ) ) === false )
+    {
+        return $module->redirectToView( 'list_source_filter', array( $sourceID ) );
+    }
+    if ( eZSyndicationFilter::filterClassName( $http->postVariable( 'FilterType' ) ) === false )
+    {
+        return $module->redirectToView( 'list_source_filter', array( $sourceID ) );
+    }
+    if ( eZSyndicationFilter::filterClassName( $http->postVariable( 'FilterType' ) ) === false )
+    {
+        return $module->redirectToView( 'list_source_filter', array( $sourceID ) );
+    }
+    if ( eZSyndicationFilter::filterClassName( $http->postVariable( 'FilterType' ) ) === false )
+    {
+        return $module->redirectToView( 'list_source_filter', array( $sourceID ) );
+    }
     $sourceFilter = eZSyndicationFeedSourceFilter::create( $sourceID,
                                                            $http->postVariable( 'FilterType' ) );
     $sourceFilter->store();
@@ -66,7 +82,10 @@ else if ( $http->hasPostVariable( 'RemoveFilter' ) )
         foreach( $http->postVariable( 'RemoveFilterIDArray' ) as $filterID )
         {
             $filter = eZSyndicationFeedSourceFilter::fetchDraft( $filterID );
-            $filter->removeDraft();
+            if ( $filter )
+            {
+                $filter->removeDraft();
+            }
         }
     }
 }
@@ -77,14 +96,7 @@ else if ( $http->hasPostVariable( 'Finnish' ) )
 }
 
 /* Fetch syndication filters */
-$syndicationINI = eZINI::instance( 'syndication.ini' );
-$filterArray = array();
-foreach( $syndicationINI->variable( 'SyndicationFilters', 'FilterArray' ) as $filterType )
-{
-    $filterClassName = 'eZFilter' . $filterType;
-    $filterArray[] = array( 'type' => $filterType,
-                            'name' => eval( 'return ' . $filterClassName . '::name();' ) );
-}
+$filterArray = eZSyndicationFilter::filterTypeList();
 
 $tpl = eZTemplate::factory();
 $tpl->setVariable( 'feed_source', $feedSource );

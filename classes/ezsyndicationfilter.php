@@ -119,7 +119,48 @@ class eZSyndicationFilter extends eZPersistentObject
     */
     static function create( $type )
     {
-        return eval( 'return new eZFilter' . $type . '( array( "status" => ' . eZSyndicationFeed::STATUS_DRAFT . ' ) );' );
+        $className = self::filterClassName( $type );
+        if ( $className === false )
+        {
+            return false;
+        }
+        return new $className( array( 'status' => eZSyndicationFeed::STATUS_DRAFT ) );
+    }
+
+    /*!
+     \static
+     The class name of a filter type from [SyndicationFilters] FilterArray in syndication.ini.
+
+     \return class name, false when the type is not one of the configured filters
+    */
+    static function filterClassName( $type )
+    {
+        $ini = eZINI::instance( 'syndication.ini' );
+        if ( !is_string( $type ) || !in_array( $type, (array)$ini->variable( 'SyndicationFilters', 'FilterArray' ), true ) )
+        {
+            return false;
+        }
+        $className = 'eZFilter' . $type;
+        return ( preg_match( '/^[A-Za-z0-9_]+$/', $type ) && class_exists( $className ) ) ? $className : false;
+    }
+
+    /*!
+     \static
+     \return array of array( 'type' => ..., 'name' => ... ) for every configured filter
+    */
+    static function filterTypeList()
+    {
+        $ini = eZINI::instance( 'syndication.ini' );
+        $list = array();
+        foreach ( (array)$ini->variable( 'SyndicationFilters', 'FilterArray' ) as $type )
+        {
+            $className = self::filterClassName( $type );
+            if ( $className !== false )
+            {
+                $list[] = array( 'type' => $type, 'name' => $className::name() );
+            }
+        }
+        return $list;
     }
 
     /*!

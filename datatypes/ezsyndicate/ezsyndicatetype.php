@@ -63,11 +63,11 @@ class eZSyndicateType extends eZBooleanType
     */
     function onPublish( &$contentObjectAttribute, &$contentObject, &$publishedNodes )
     {
-        $db =& eZDB::instance();
+        $db = eZDB::instance();
         $db->query( 'INSERT INTO ezpending_actions( action, param ) VALUES ( "syndicate", '. (int)$contentObject->attribute( 'id' ) .' )' );
     }
 }
 
 eZDataType::register( eZSyndicateType::WORKFLOW_TYPE_STRING, 'ezsyndicatetype' );
 
-?>
+?>

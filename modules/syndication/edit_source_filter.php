@@ -43,6 +43,10 @@ $sourceFilterID = $Params['SourceFilterID'];
 $http = eZHTTPTool::instance();
 
 $sourceFilter = eZSyndicationFeedSourceFilter::fetchDraft( $sourceFilterID );
+if ( !$sourceFilter || !$sourceFilter->attribute( 'id' ) )
+{
+    return $module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
+}
 $filter = $sourceFilter->filter();
 
 if ( $http->hasPostVariable( 'Store' ) )

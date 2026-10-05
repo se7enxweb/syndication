@@ -71,7 +71,7 @@ class eZImportEditName extends eZImportEditWizard
         $syndicationImport->setAttribute( 'name', $name );
         if ( strlen( $name ) == 0 )
         {
-            $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit', 'Please enter valid Name' );
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication', 'Please enter valid Name' );
             $valid = false;
         }
 
@@ -86,18 +86,21 @@ class eZImportEditName extends eZImportEditWizard
         {
             $optionArray['login'] = trim( $this->HTTP->postVariable( 'Login' ) );
         }
-        if ( $this->HTTP->hasPostVariable( 'Password' ) )
+        if ( $this->HTTP->hasPostVariable( 'Password' ) && $this->HTTP->postVariable( 'Password' ) !== '' )
         {
             $optionArray['password'] = $this->HTTP->postVariable( 'Password' );
         }
         $syndicationImport->setAttribute( 'options', serialize( $optionArray ) );
+
+        // Keep what was typed, also when a check below fails.
+        $syndicationImport->sync();
 
         $url = parse_url( $server );
 
         if ( !isset( $url['scheme'] ) ||
              !isset( $url['host'] ) )
         {
-            $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit', 'Warning, server is not valid URL !' );
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication', 'Warning, server is not valid URL !' );
             return false;
         }
 
@@ -120,7 +123,7 @@ class eZImportEditName extends eZImportEditWizard
 
         if ( is_int( $response ) || $responseCode !== false || $responseValue === false || $responseValue === '' )
         {
-            $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication',
                                            'Warning, SOAP feed list request to "%server" did not return a valid result',
                                            '',
                                            array( '%server' => $server ) );
@@ -134,7 +137,7 @@ class eZImportEditName extends eZImportEditWizard
         if ( is_int( $response ) ||
              ( !is_int( $response ) && ( $response->faultCode() !== false || $response->value() === false || $response->value() === '' ) ) )
         {
-            $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication',
                                            'Warning, SOAP feed list request to "%server" did not return a valid result #2',
                                            '',
                                            array( '%server' => $server ) );
@@ -147,4 +150,4 @@ class eZImportEditName extends eZImportEditWizard
     }
 }
 
-?>
+?>

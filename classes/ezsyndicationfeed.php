@@ -380,7 +380,7 @@ class eZSyndicationFeed extends eZPersistentObject
     static function &canEdit()
     {
         $user = eZUser::instance();
-        $accessArray = $user->hasAccessTo( 'syndication', 'edit_feed' );
+        $accessArray = $user->hasAccessTo( 'syndication', 'edit_export' );
         $result = $accessArray['accessWord'] == 'yes';
         return $result;
     }
@@ -406,21 +406,29 @@ class eZSyndicationFeed extends eZPersistentObject
 
      \param feed id, optional, current object if none specified
     */
-    function removeFeed( $ID = false )
+    static function removeFeed( $ID )
     {
-        if ( $ID !== false )
+        $removed = false;
+        foreach ( array( eZSyndicationFeed::STATUS_PUBLISHED, eZSyndicationFeed::STATUS_DRAFT ) as $status )
         {
-            $feed = eZSyndicationFeed::fetch( $ID );
+            $feed = eZSyndicationFeed::fetch( $ID, $status );
             if ( $feed )
             {
-                $feed->removeFeed();
+                $feed->removeFeedObject();
+                $removed = true;
             }
-            return;
         }
+        return $removed;
+    }
 
+    /*!
+     Remove this feed row and its sources.
+    */
+    function removeFeedObject()
+    {
         foreach( $this->sourceList() as $source )
         {
-            $source->removeSource();
+            $source->removeSourceObject();
         }
 
         eZPersistentObject::remove();

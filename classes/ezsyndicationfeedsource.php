@@ -229,8 +229,8 @@ class eZSyndicationFeedSource extends eZPersistentObject
      \param Node ID
      \param Feed type ( optional, default subtree )
     */
-    static function create( $feedID,
-                     $nodeID,
+    static function create( $feedID = 0,
+                     $nodeID = 0,
                      $type = eZSyndicationFeedSource::TYPE_TREE )
     {
         if ( !is_numeric( $type ) )
@@ -363,27 +363,29 @@ class eZSyndicationFeedSource extends eZPersistentObject
 
      \param Source feed id
     */
-    function removeSource( $id = false )
+    static function removeSource( $id )
     {
-        if ( $id !== false )
+        $removed = false;
+        foreach ( array( eZSyndicationFeed::STATUS_PUBLISHED, eZSyndicationFeed::STATUS_DRAFT ) as $status )
         {
-            $source = eZSyndicationFeedSource::fetch( $id );
-            if ( !$source )
-            {
-                $source = eZSyndicationFeedSource::fetch( $id, eZSyndicationFeed::STATUS_DRAFT );
-            }
+            $source = eZSyndicationFeedSource::fetch( $id, $status );
             if ( $source )
             {
-                $source->removeSource();
+                $source->removeSourceObject();
+                $removed = true;
             }
-            return;
         }
+        return $removed;
+    }
 
-        $this->removeDraft();
-
+    /*!
+     Remove this source row and its filters.
+    */
+    function removeSourceObject()
+    {
         foreach( $this->attribute( 'filter_list' ) as $filter )
         {
-            $filter->removeFilter();
+            $filter->removeFilterObject();
         }
 
         eZPersistentObject::remove();

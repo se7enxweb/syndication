@@ -42,31 +42,31 @@ $Module = array( 'name' => 'eZSyndication',
 $ViewList = array();
 $ViewList['menu'] = array(
     'functions' => array( 'menu' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'script' => 'menu.php' );
 
 $ViewList['list'] = array(
     'functions' => array( 'view_export' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'unordered_params' => array( 'offset' => 'Offset' ),
     'script' => 'list.php' );
 
 $ViewList['import_list'] = array(
     'functions' => array( 'view_export' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'unordered_params' => array( 'offset' => 'Offset' ),
     'script' => 'import_list.php' );
 
 $ViewList['import_edit'] = array(
     'functions' => array( 'edit_import' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'ImportID' ),
     'unordered_params' => array( 'step' => 'Step' ),
     'script' => 'import_edit.php' );
 
 $ViewList['pending_edit'] = array(
     'functions' => array( 'import_object_status' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'ImportID' ),
     'unordered_params' => array( 'offset' => 'Offset',
                                  'status' => 'Status' ),
@@ -74,48 +74,56 @@ $ViewList['pending_edit'] = array(
 
 $ViewList['edit'] = array(
     'functions' => array( 'edit_export' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'FeedID' ),
     'script' => 'edit.php' );
 
 $ViewList['add_feed_source'] = array(
     'functions' => array( 'edit_export' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'FeedID', 'Step' ),
     'unordered_params' => array( 'source_type' => 'SourceType' ),
     'script' => 'add_feed_source.php' );
 
 $ViewList['list_source_filter'] = array(
     'functions' => array( 'edit_export' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'SourceFeedID' ),
     'script' => 'list_source_filter.php' );
 
 $ViewList['edit_source_filter'] = array(
     'functions' => array( 'edit_export' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'SourceFilterID' ),
     'script' => 'edit_source_filter.php' );
 
 $ViewList['edit_import_filter'] = array(
     'functions' => array( 'edit_import' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'ImportFilterID' ),
     'script' => 'edit_import_filter.php',
     'single_post_actions' => array( 'StoreButton' => 'Store',
                                     'DiscardButton' => 'Discard' ) );
 
 $ViewList['import_info'] = array(
-    'functions' => array( 'import_view' ),
-    'default_navigation_part' => 'ezsyndicationpart',
+    'functions' => array( 'view_import' ),
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
     'params' => array( 'ImportID' ),
-    'script' => 'import_info',
-    'single_post_actions' => array( 'ImportButton' => 'Import' ) );
+    'unordered_params' => array( 'offset' => 'Offset' ),
+    'script' => 'import_info.php' );
 
 $ViewList['feed_info'] = array(
     'functions' => array( 'view_export_info' ),
-    'default_navigation_part' => 'ezsyndicationpart',
-    'params' => array( 'FeedID' ) );
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
+    'params' => array( 'FeedID' ),
+    'unordered_params' => array( 'offset' => 'Offset' ),
+    'script' => 'feed_info.php' );
+
+$ViewList['job'] = array(
+    'functions' => array( 'menu' ),
+    'default_navigation_part' => 'ezsyndicationnavigationpart',
+    'params' => array( 'JobID' ),
+    'script' => 'job.php' );
 
 $FeedID = array(
     'name' => 'Feed',

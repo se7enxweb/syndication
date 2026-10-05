@@ -98,6 +98,7 @@ class eZImportEditOptions extends eZImportEditWizard
         {
             $syndicationImport->setOption( $optionName, $this->HTTP->hasPostVariable( $httpName ) );
         }
+        $syndicationImport->setAttribute( 'enabled', $this->HTTP->hasPostVariable( 'Active' ) ? 1 : 0 );
         $syndicationImport->sync();
 
         if ( $this->HTTP->hasPostVariable( 'BrowseNodeLocation' ) )
@@ -117,6 +118,12 @@ class eZImportEditOptions extends eZImportEditWizard
                                      $this->Module );
             return false;
 
+        }
+
+        if ( !$syndicationImport->attribute( 'placement_node_id' ) )
+        {
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication', 'Choose the location for the imported content.' );
+            return false;
         }
 
         return true;

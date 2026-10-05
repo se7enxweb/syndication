@@ -241,18 +241,26 @@ class eZSyndicationFeedSourceFilter extends eZPersistentObject
 
      \param Source feed id, optional, current object if none specified
     */
-    function removeFilter( $ID = false )
+    static function removeFilter( $ID )
     {
-        if ( $ID !== false )
+        $removed = false;
+        foreach ( array( eZSyndicationFeed::STATUS_PUBLISHED, eZSyndicationFeed::STATUS_DRAFT ) as $status )
         {
-            $filter = eZSyndicationFeedSourceFilter::fetch( $ID );
+            $filter = eZSyndicationFeedSourceFilter::fetch( $ID, $status );
             if ( $filter )
             {
-                $filter->removeFilter();
+                $filter->removeFilterObject();
+                $removed = true;
             }
-            return;
         }
+        return $removed;
+    }
 
+    /*!
+     Remove this filter row.
+    */
+    function removeFilterObject()
+    {
         eZPersistentObject::remove();
     }
 

@@ -1,99 +1,78 @@
 <?php
 //
-// Created on: <17-Sep-2006 21:50:10 hovik>
-//
 // Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
 // Copyright (C) 1999-2008 eZ Systems AS. All rights reserved.
 //
-// This source file is part of the eZ Publish (tm) Open Source Content
-// Management System.
-//
 // This file may be distributed and/or modified under the terms of the
-// "GNU General Public License" version 2 as published by the Free
-// Software Foundation and appearing in the file LICENSE included in
-// the packaging of this file.
-//
-// Licencees holding a valid "eZ Publish professional licence" version 2
-// may use this file in accordance with the "eZ Publish professional licence"
-// version 2 Agreement provided with the Software.
-//
-// This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING
-// THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-// PURPOSE.
-//
-// The "eZ Publish professional licence" version 2 is available at
-// http://ez.no/ez_publish/licences/professional/ and in the file
-// PROFESSIONAL_LICENCE included in the packaging of this file.
-// For pricing of this licence please contact us via e-mail to licence@ez.no.
-// Further contact information is available at http://ez.no/company/contact/.
-//
-// The "GNU General Public License" (GPL) is available at
-// http://www.gnu.org/copyleft/gpl.html.//
-// Contact licence@ez.no if any conditions of this licencing isn't clear to
-// you.
+// "GNU General Public License" version 2 (or any later version).
 //
 
 /*! \file pending_edit.php
+    The items of an import and their import status: let the editor approve or deny what waits.
 */
 
-/*!
-  \brief The class Pending_Edit does
-
-*/
-
-$module =& $Params["Module"];
-$offset = $Params['Offset'];
-$importID = $Params['ImportID'];
+$module = $Params['Module'];
+if ( $redirect = eZSyndicationUI::redirectIfNotInstalled( $module ) )
+{
+    return $redirect;
+}
+$offset = isset( $Params['Offset'] ) ? max( 0, (int)$Params['Offset'] ) : 0;
+$importID = (int)$Params['ImportID'];
 $limit = 25;
 
-$viewParameters = array( 'offset' => $offset ? $offset : '0',
-                         'limit' => $limit );
+$import = eZSyndicationImport::fetch( $importID );
+if ( !$import )
+{
+    return $module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
+}
 
-$http = eZHttpTool::instance();
+$http = eZHTTPTool::instance();
 
 $allowChangeFromStatusList = eZSyndicationFeedItemStatus::allowChangeFromStatusList();
 $allowChangeToStatusList = eZSyndicationFeedItemStatus::allowUserStatusList();
 
 if ( $http->hasPostVariable( 'Update' ) )
 {
-    foreach( $http->postVariable( 'StatusIDList' ) as $feedStatusID )
+    $changed = 0;
+    $idList = $http->hasPostVariable( 'StatusIDList' ) ? (array)$http->postVariable( 'StatusIDList' ) : array();
+    foreach ( $idList as $feedStatusID )
     {
-        $feedItemStatus = eZSyndicationFeedItemStatus::fetch( $feedStatusID );
-        $changeStatusTo = $http->postVariable( 'StatusMode_' . $feedStatusID );
-        if ( in_array( $feedItemStatus->attribute( 'status' ), $allowChangeFromStatusList ) &&
-             in_array( $changeStatusTo, $allowChangeToStatusList ) )
+        $feedItemStatus = eZSyndicationFeedItemStatus::fetch( (int)$feedStatusID );
+        if ( !$feedItemStatus || !$http->hasPostVariable( 'StatusMode_' . (int)$feedStatusID ) )
+        {
+            continue;
+        }
+        $changeStatusTo = (int)$http->postVariable( 'StatusMode_' . (int)$feedStatusID );
+        if ( in_array( (int)$feedItemStatus->attribute( 'status' ), $allowChangeFromStatusList, true ) &&
+             in_array( $changeStatusTo, $allowChangeToStatusList, true ) &&
+             (int)$feedItemStatus->attribute( 'status' ) !== $changeStatusTo )
         {
             $feedItemStatus->setAttribute( 'status', $changeStatusTo );
             $feedItemStatus->store();
+            ++$changed;
         }
     }
+    eZSyndicationUI::notice( 'feedback', ezpI18n::tr( 'extension/syndication', '%count items were changed.', null, array( '%count' => $changed ) ) );
+    return $module->redirectToView( 'pending_edit', array( $importID ) );
 }
 
-if ( isset( $Params['UserParameters'] ) )
-{
-    $userParameters = $Params['UserParameters'];
-}
-else
-{
-    $userParameters = array();
-}
-
-$viewParameters = array_merge( $viewParameters, $userParameters );
+$userParameters = isset( $Params['UserParameters'] ) && is_array( $Params['UserParameters'] ) ? $Params['UserParameters'] : array();
+$statusNameMap = eZSyndicationFeedItemStatus::statusNameMap();
 
 $statusFilter = -1;
-if ( isset( $userParameters['statusFilter'] ) &&
-     in_array( $userParameters['statusFilter'],
-               array_keys( eZSyndicationFeedItemStatus::statusNameMap() ) ) )
+if ( isset( $userParameters['statusFilter'] ) && isset( $statusNameMap[(int)$userParameters['statusFilter']] ) )
 {
-    $statusFilter = $userParameters['statusFilter'];
+    $statusFilter = (int)$userParameters['statusFilter'];
 }
-$statusCondFilter = ( $statusFilter == -1 ) ? array_keys( eZSyndicationFeedItemStatus::statusNameMap() ) :
-    $statusFilter;
+$statusCondFilter = ( $statusFilter == -1 ) ? array_keys( $statusNameMap ) : $statusFilter;
 
-$import = eZSyndicationImport::fetch( $importID );
-$feedStatusList = $import->fetchItemStatusList( $statusCondFilter,
-                                                $offset,
-                                                25 );
+$viewParameters = array( 'offset' => $offset, 'limit' => $limit );
+if ( $statusFilter != -1 )
+{
+    $viewParameters['statusFilter'] = $statusFilter;
+}
+
+$feedStatusList = $import->fetchItemStatusList( $statusCondFilter, $offset, $limit );
 $feedStatusListCount = $import->fetchItemStatusListCount( $statusCondFilter );
 
 $tpl = eZTemplate::factory();
@@ -102,14 +81,20 @@ $tpl->setVariable( 'statusFilter', $statusFilter );
 $tpl->setVariable( 'view_parameters', $viewParameters );
 $tpl->setVariable( 'statusList', $feedStatusList );
 $tpl->setVariable( 'statusListCount', $feedStatusListCount );
-$tpl->setVariable( 'statusNameMap', eZSyndicationFeedItemStatus::statusNameMap() );
+$tpl->setVariable( 'statusNameMap', $statusNameMap );
 $tpl->setVariable( 'allowUserStatusList', $allowChangeToStatusList );
 $tpl->setVariable( 'allowChangeFromStatusList', $allowChangeFromStatusList );
+$tpl->setVariable( 'notices', eZSyndicationUI::takeNotices() );
 
 $Result = array();
-$Result['content'] = $tpl->fetch( "design:syndication/pending_edit.tpl" );
-$Result['path'] = array( array( 'url' => 'syndication/import_list',
-                                'text' => ezpI18n::tr( 'syndication/import', 'Syndication' ) ) );
-
+$Result['content'] = $tpl->fetch( 'design:syndication/pending_edit.tpl' );
+$Result['path'] = array( array( 'url' => 'syndication/menu',
+                                'text' => ezpI18n::tr( 'extension/syndication', 'Syndication' ) ),
+                         array( 'url' => 'syndication/import_list',
+                                'text' => ezpI18n::tr( 'extension/syndication', 'Imports' ) ),
+                         array( 'url' => 'syndication/import_info/' . $importID,
+                                'text' => $import->attribute( 'name' ) ),
+                         array( 'url' => false,
+                                'text' => ezpI18n::tr( 'extension/syndication', 'Items' ) ) );
 
 ?>

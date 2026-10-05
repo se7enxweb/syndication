@@ -66,7 +66,7 @@ class eZImportEditFeed extends eZImportEditWizard
         if ( !isset( $url['scheme'] ) ||
              !isset( $url['host'] ) )
         {
-            $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit', 'Warning, server is not valid URL !' );
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication', 'Warning, server is not valid URL !' );
         }
 
         $client = $syndicationImport->attribute( 'soap_client' );
@@ -74,9 +74,9 @@ class eZImportEditFeed extends eZImportEditWizard
                                       "http://ez.no/syndication" );
         $response = $client->send( $request );
 
-        if ( $response->faultCode() || $response->value() === false || $response->value() === '' )
+        if ( !is_object( $response ) || $response->faultCode() || $response->value() === false || $response->value() === '' )
         {
-            $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
+            $this->WarningList[] = ezpI18n::tr( 'extension/syndication',
                                            'Warning, SOAP feed list request to "%server" did not return a valid result',
                                            '',
                                            array( '%server' => $syndicationImport->attribute( 'server' ) ) );
@@ -96,9 +96,12 @@ class eZImportEditFeed extends eZImportEditWizard
         $request = new eZSOAPRequest( "hostID", "http://ez.no/syndication" );
         $response = $client->send( $request );
 
-        $syndicationImport = $this->attribute( 'syndication_import' );
-        $syndicationImport->setAttribute( 'host_id', $response->value() );
-        $syndicationImport->sync();
+        if ( is_object( $response ) && !$response->faultCode() && is_string( $response->value() ) )
+        {
+            $syndicationImport = $this->attribute( 'syndication_import' );
+            $syndicationImport->setAttribute( 'host_id', $response->value() );
+            $syndicationImport->sync();
+        }
 
         return eZImportEditWizard::process();
     }
@@ -149,7 +152,7 @@ class eZImportEditFeed extends eZImportEditWizard
             return true;
         }
 
-        $this->WarningList[] = ezpI18n::tr( 'design/standard/syndication/edit',
+        $this->WarningList[] = ezpI18n::tr( 'extension/syndication',
                                        'No Syndication feed selected.' );
         return false;
     }

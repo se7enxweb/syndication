@@ -1,36 +1,23 @@
-<form action={concat("syndication/add_feed_source/", $feed_id, "/", $next_step)|ezurl} method="post" name="Syndication">
-
-<div class="context-block">
-{* DESIGN: Header START *}<div class="box-header"><div class="box-tc"><div class="box-ml"><div class="box-mr"><div class="box-tl"><div class="box-tr">
-<h2 class="context-title">{"Add Source to feed - %name"|i18n("design/standard/syndication/edit", "", hash( "%name", $syndication_feed.name|wash ) )}</h2>
-
-{* DESIGN: Mainline *}<div class="header-mainline"></div>
-
-{* DESIGN: Header END *}</div></div></div></div></div></div>
-
-{* DESIGN: Content START *}<div class="box-ml"><div class="box-mr"><div class="box-content">
-
-<div class="context-attributes">
-
-{include uri="design:syndication/add_feed_source/add_feed_source_steps.tpl}
-
-<div class="block">
-<label>{"Choose source type"|i18n("design/standard/syndication/edit")}</label>
-<input type="radio" name="SourceType" checked="checked" value="tree">{"Subtree"|i18n("design/standard/syndication/edit")}</input><br />
-<input type="radio" name="SourceType" value="node">{"Node"|i18n("design/standard/syndication/edit")}</input><br />
-</div>
-
-</div>
-
-{* DESIGN: Content END *}</div></div></div>
-
-    {* Buttons. *}
+{ezcss_require( 'syndication.css' )}
+<form action={concat( 'syndication/add_feed_source/', $feed_id, '/', $next_step )|ezurl} method="post" name="Syndication">
+<div class="context-block syn">
+    <div class="box-header">
+        <h1 class="context-title">{'Add a source to the feed "%name"'|i18n( 'extension/syndication',, hash( '%name', $syndication_feed.name ) )|wash}</h1>
+        <div class="header-mainline"></div>
+    </div>
+    <div class="box-content">
+        {include uri='design:syndication/add_feed_source/add_feed_source_steps.tpl' step=1}
+        <div class="block">
+            <label>{'What does the source export?'|i18n( 'extension/syndication' )}</label>
+            <label><input type="radio" name="SourceType" checked="checked" value="tree" /> {'A subtree: the node and everything below it'|i18n( 'extension/syndication' )}</label><br />
+            <label><input type="radio" name="SourceType" value="node" /> {'A single node'|i18n( 'extension/syndication' )}</label>
+        </div>
+    </div>
     <div class="controlbar">
-{* DESIGN: Control bar START *}<div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-tc"><div class="box-bl"><div class="box-br">
-    <div class="block">
-        {include uri="design:gui/button.tpl" id_name="NextStepButton" value="Next >>"|i18n("design/standard/syndication/edit")}
+        <div class="block">
+            <input class="defaultbutton" type="submit" name="NextStepButton" value="{'Next'|i18n( 'extension/syndication' )|wash}" />
+            <a class="button" href={concat( 'syndication/edit/', $feed_id )|ezurl}>{'Back to the feed'|i18n( 'extension/syndication' )}</a>
+        </div>
     </div>
-{* DESIGN: Control bar END *}</div></div></div></div></div></div>
-    </div>
-
+</div>
 </form>

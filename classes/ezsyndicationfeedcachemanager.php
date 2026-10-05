@@ -69,7 +69,7 @@ class eZSyndicationFeedCacheManager
         }
         if ( $fileContents )
         {
-            $this->CacheInfo = unserialize( $fileContents );
+            $this->CacheInfo = eZSyndication::unserializeArray( $fileContents );
         }
     }
 

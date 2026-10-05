@@ -1,15 +1,15 @@
-<?php /*
+<?php /* #?ini charset="utf-8"?
 
 [NavigationPart]
-Part[ezsyndicationpart]=Syndication
+Part[ezsyndicationnavigationpart]=Syndication
 
 [TopAdminMenu]
 Tabs[]=syndication
 
 [Topmenu_syndication]
-NavigationPartIdentifier=ezsyndicationpart
+NavigationPartIdentifier=ezsyndicationnavigationpart
 Name=Syndication
-#Tooltip=Configure settings and manage advanced functionality.
+Tooltip=Export parts of the content tree as feeds, import the feeds of other sites
 URL[]
 URL[default]=syndication/menu
 Enabled[]
@@ -20,6 +20,7 @@ Shown[]
 Shown[default]=true
 Shown[navigation]=true
 Shown[browse]=true
+PolicyList[]=syndication/menu
 
 [Leftmenu_syndication]
 Name=Syndication
@@ -37,5 +38,9 @@ Enabled[]
 Enabled[default]=true
 Enabled[edit]=false
 Enabled[browse]=false
+PolicyList_syndication[]=syndication/menu
+PolicyList_feeds[]=syndication/view_export
+PolicyList_imports[]=syndication/view_export
+PolicyList_sources[]=syndication/edit_export
 
 */ ?>

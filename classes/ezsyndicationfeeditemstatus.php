@@ -114,7 +114,7 @@ class eZSyndicationFeedItemStatus extends eZPersistentObject
             case 'option_array':
             {
                 $optionDef = $this->attribute( 'options' );
-                $retVal = $optionDef == '' ? array() : unserialize( $optionDef );
+                $retVal = eZSyndication::unserializeArray( $optionDef );
             } break;
 
             case 'feed_item':
@@ -242,14 +242,14 @@ class eZSyndicationFeedItemStatus extends eZPersistentObject
     */
     static function statusNameMap()
     {
-        return array( eZSyndicationFeedItemStatus::STATUS_NONE => ezpI18n::tr( 'syndication', 'None' ),
-                      eZSyndicationFeedItemStatus::STATUS_PENDING => ezpI18n::tr( 'syndication', 'Pending' ),
-                      eZSyndicationFeedItemStatus::STATUS_INSTALLING => ezpI18n::tr( 'syndication', 'Installing' ),
-                      eZSyndicationFeedItemStatus::STATUS_INSTALLED => ezpI18n::tr( 'syndication', 'Installed' ),
-                      eZSyndicationFeedItemStatus::STATUS_FAILED => ezpI18n::tr( 'syndication', 'Failed' ),
-                      eZSyndicationFeedItemStatus::STATUS_DENIED => ezpI18n::tr( 'syndication', 'Denied' ),
-                      eZSyndicationFeedItemStatus::STATUS_DELETED => ezpI18n::tr( 'syndication', 'Deleted' ),
-                      eZSyndicationFeedItemStatus::STATUS_IGNORED => ezpI18n::tr( 'syndication', 'Ignoring' ) );
+        return array( eZSyndicationFeedItemStatus::STATUS_NONE => ezpI18n::tr( 'extension/syndication', 'None' ),
+                      eZSyndicationFeedItemStatus::STATUS_PENDING => ezpI18n::tr( 'extension/syndication', 'Pending' ),
+                      eZSyndicationFeedItemStatus::STATUS_INSTALLING => ezpI18n::tr( 'extension/syndication', 'Installing' ),
+                      eZSyndicationFeedItemStatus::STATUS_INSTALLED => ezpI18n::tr( 'extension/syndication', 'Installed' ),
+                      eZSyndicationFeedItemStatus::STATUS_FAILED => ezpI18n::tr( 'extension/syndication', 'Failed' ),
+                      eZSyndicationFeedItemStatus::STATUS_DENIED => ezpI18n::tr( 'extension/syndication', 'Denied' ),
+                      eZSyndicationFeedItemStatus::STATUS_DELETED => ezpI18n::tr( 'extension/syndication', 'Deleted' ),
+                      eZSyndicationFeedItemStatus::STATUS_IGNORED => ezpI18n::tr( 'extension/syndication', 'Ignoring' ) );
     }
 
     /*!

@@ -255,7 +255,7 @@ class eZSyndicationImport extends eZPersistentObject
             case 'option_array':
             {
                 $optionDef = $this->attribute( 'options' );
-                $retVal = $optionDef == '' ? array() : unserialize( $optionDef );
+                $retVal = eZSyndication::unserializeArray( $optionDef );
             } break;
 
             case 'can_edit':
@@ -276,31 +276,37 @@ class eZSyndicationImport extends eZPersistentObject
 
     /*!
      Fetch new Feed items from server.
+
+     \return number of new or changed items, false when the server did not answer with a feed item list
     */
     function fetchNewItems()
     {
         $soapClient = $this->attribute( 'soap_client' );
         $maxModified = eZSyndicationFeedItem::maxModified( $this->attribute( 'host_id' ),
                                                            $this->attribute( 'feed_id' ) );
-        $requestParams = array( 'feedID' => $this->attribute( 'feed_id' ) );
-        if ( !is_null( $maxModified ) )
-        {
-            $requestParams['modified'] = $maxModified;
-        }
+        // The server function takes both parameters; max( modified ) is NULL while nothing was fetched yet.
+        $requestParams = array( 'feedID' => (int)$this->attribute( 'feed_id' ),
+                                'modified' => (int)$maxModified );
         $request = new eZSOAPRequest( "fetchSyndicationFeedItemList",
                                       "http://ez.no/syndication",
                                       $requestParams );
 
         $response = $soapClient->send( $request );
-        if ( $response->faultCode() != false )
+        if ( !is_object( $response ) || $response->faultCode() != false )
         {
-            return array();
+            return false;
         }
 
-        $feedExportItem = unserialize( $response->value() );
+        $feedExportItem = $this->unserializeArray( $response->value() );
+        $newCount = 0;
 
+        $required = array( 'feed_id', 'host_id', 'depth', 'remote_id', 'contentobject_version', 'options', 'modified' );
         foreach( $feedExportItem as $feedExport )
         {
+            if ( !is_array( $feedExport ) || array_diff( $required, array_keys( $feedExport ) ) )
+            {
+                continue;
+            }
             if ( $existingFeed = eZSyndicationFeedItem::fetchByHostFeedRemoteID( $this->attribute( 'host_id' ),
                                                                                  $this->attribute( 'feed_id' ),
                                                                                  $feedExport['remote_id'] ) )
@@ -310,9 +316,14 @@ class eZSyndicationImport extends eZPersistentObject
                     if ( $existingFeed->attribute( 'contentobject_version' ) != $feedExport['contentobject_version'] )
                     {
                         $feedItemStatus = $existingFeed->attribute( 'feed_item_status' );
+                        if ( !$feedItemStatus )
+                        {
+                            $feedItemStatus = eZSyndicationFeedItemStatus::create( $existingFeed->attribute( 'id' ) );
+                        }
                         $feedItemStatus->setAttribute( 'status', $this->itemStatus() );
                         $feedItemStatus->store();
                     }
+                    ++$newCount;
                     $existingFeed->setAttribute( 'depth', $feedExport['depth'] );
                     $existingFeed->setAttribute( 'contentobject_version', $feedExport['contentobject_version'] );
                     $existingFeed->setAttribute( 'options', $feedExport['options'] );
@@ -334,8 +345,21 @@ class eZSyndicationImport extends eZPersistentObject
                 $feedItemStatus = eZSyndicationFeedItemStatus::create( $feedItem->attribute( 'id' ) );
                 $feedItemStatus->setAttribute( 'status', $this->itemStatus() );
                 $feedItemStatus->store();
+                ++$newCount;
             }
         }
+        return $newCount;
+    }
+
+    /*!
+     Unserialize data that may come from a remote server or from the database: an array of plain values,
+     never objects.
+
+     \return array, empty when the data is not a serialized array (an empty item list is a valid answer)
+    */
+    function unserializeArray( $data )
+    {
+        return eZSyndication::unserializeArray( $data );
     }
 
     /*!
@@ -372,7 +396,7 @@ class eZSyndicationImport extends eZPersistentObject
         if ( is_array( $status ) )
         {
             $statusString = ' IN ( \'';
-            $statusString .= implode( '\', \'', $status );
+            $statusString .= implode( '\', \'', array_map( 'intval', $status ) );
             $statusString .= '\' ) ';
         }
         else
@@ -405,7 +429,7 @@ class eZSyndicationImport extends eZPersistentObject
 
     \return Item status list
     */
-    function fetchItemStatusListCount( $status = eZSyndicationFeedItemStatus_StatusNone )
+    function fetchItemStatusListCount( $status = eZSyndicationFeedItemStatus::STATUS_NONE )
     {
         $db = eZDB::instance();
 
@@ -424,8 +448,7 @@ class eZSyndicationImport extends eZPersistentObject
                   ezsyndication_feed_item_status status
              WHERE item.feed_id = \'' . $db->escapeString( $this->attribute( 'feed_id' ) ) . '\' AND
                    item.id = status.feed_item_id AND
-                   status.status ' . $statusString . '
-             ORDER BY item.modified DESC';
+                   status.status ' . $statusString;
         $resultSet = $db->arrayQuery( $sql );
         return $resultSet[0]['status_count'];
     }
@@ -550,24 +573,23 @@ class eZSyndicationImport extends eZPersistentObject
 
      \param import id, optional, current object if none specified
     */
-    public static function removeImport( $ID = false )
+    public static function removeImport( $ID )
     {
-        if ( $ID !== false )
+        $removed = false;
+        foreach ( array( eZSyndicationImport::STATUS_PUBLISHED, eZSyndicationImport::STATUS_DRAFT ) as $status )
         {
-            $import = eZSyndicationImport::fetch( $ID );
+            $import = eZSyndicationImport::fetch( $ID, $status );
             if ( $import )
             {
+                foreach ( $import->attribute( 'filter_list' ) as $filter )
+                {
+                    $filter->removeFilterObject();
+                }
                 $import->remove();
+                $removed = true;
             }
-            return;
         }
-
-        foreach( $this->attribute( 'filter_list' ) as $filter )
-        {
-            $filter->remove();
-        }
-
-        eZPersistentObject::remove();
+        return $removed;
     }
 
     /*!

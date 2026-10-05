@@ -46,19 +46,24 @@ $importFilterID = $Params['ImportFilterID'];
 $http = eZHTTPTool::instance();
 
 $importFilter = eZSyndicationImportFilter::fetch( $importFilterID );
+if ( !$importFilter )
+{
+    return $module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
+}
 $filter = $importFilter->filter();
+$importID = (int)$importFilter->attribute( 'import_id' );
 
 if ( $http->hasPostVariable( 'Store' ) )
 {
     if ( $filter->handleHTTPPost( $http ) )
     {
         $filter->store();
-        return $module->redirectToView( 'import_edit');
+        return $module->redirectToView( 'import_edit', array( $importID ) );
     }
 }
 else if( $http->hasPostVariable( 'Cancel' ) )
 {
-    return $module->redirectToView( 'import_edit');
+    return $module->redirectToView( 'import_edit', array( $importID ) );
 }
 
 $tpl = eZTemplate::factory();

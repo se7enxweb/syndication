@@ -122,7 +122,7 @@ class eZSyndicationFeedItemExport extends eZPersistentObject
             case 'option_array':
             {
                 $optionDef = $this->attribute( 'options' );
-                $retVal = $optionDef == '' ? array() : unserialize( $optionDef );
+                $retVal = eZSyndication::unserializeArray( $optionDef );
             } break;
 
             default:

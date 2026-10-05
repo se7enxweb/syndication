@@ -131,7 +131,7 @@ class eZSyndicationFeedItem extends eZPersistentObject
             case 'option_array':
             {
                 $optionDef = $this->attribute( 'options' );
-                $retVal = $optionDef == '' ? array() : unserialize( $optionDef );
+                $retVal = eZSyndication::unserializeArray( $optionDef );
             } break;
 
             case 'syndication_import':
@@ -747,4 +747,4 @@ class eZSyndicationFeedItem extends eZPersistentObject
     var $ObjectImportIDList = array();
 }
 
-?>
+?>

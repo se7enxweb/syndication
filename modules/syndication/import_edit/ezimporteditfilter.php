@@ -59,13 +59,7 @@ class eZImportEditFilter extends eZImportEditWizard
     */
     function process()
     {
-        $syndicationINI = eZINI::instance( 'syndication.ini' );
-        foreach( $syndicationINI->variable( 'SyndicationFilters', 'FilterArray' ) as $filterType )
-        {
-            $filterClassName = 'eZFilter' . $filterType;
-            $this->FilterArray[] = array( 'type' => $filterType,
-                                          'name' => eval( 'return ' . $filterClassName . '::name();' ) );
-        }
+        $this->FilterArray = eZSyndicationFilter::filterTypeList();
 
         return eZImportEditWizard::process();
     }
@@ -75,7 +69,8 @@ class eZImportEditFilter extends eZImportEditWizard
     */
     function postCheck()
     {
-        if ( $this->HTTP->hasPostVariable( 'AddFilterButton' ) )
+        if ( $this->HTTP->hasPostVariable( 'AddFilterButton' ) &&
+             eZSyndicationFilter::filterClassName( $this->HTTP->postVariable( 'FilterType' ) ) !== false )
         {
             $syndicationImport = $this->attribute( 'syndication_import' );
             $filter = eZSyndicationImportFilter::create( $syndicationImport->attribute( 'id' ),

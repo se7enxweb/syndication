@@ -62,7 +62,24 @@ class eZSyndication
 
      \return Syndication version info
     */
-    function version()
+    /*!
+     \static
+     Unserialize an option array stored in the database or received from a remote server. Objects are never
+     created from it.
+
+     \return array, empty array when the data is empty or not a serialized array
+    */
+    static function unserializeArray( $data )
+    {
+        if ( !is_string( $data ) || $data === '' )
+        {
+            return array();
+        }
+        $result = @unserialize( $data, array( 'allowed_classes' => false ) );
+        return is_array( $result ) ? $result : array();
+    }
+
+    static function version()
     {
         return eZSyndication::VERSION_MAJOR . '.' . eZSyndication::VERSION_MINOR;
     }

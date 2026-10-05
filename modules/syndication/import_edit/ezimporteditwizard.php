@@ -181,7 +181,8 @@ class eZImportEditWizard extends eZWizardBase
                                                              'eZImportWizard' );
 
         // If ImportID is set, this is the first step in the wizard.
-        if ( isset ( $Params['ImportID'] ) )
+        // A POST belongs to a running wizard: only a plain request (a link) starts it over.
+        if ( isset ( $Params['ImportID'] ) && ( !isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] !== 'POST' ) )
         {
             if ( is_numeric( $Params['ImportID'] ) )
             {
@@ -200,10 +201,6 @@ class eZImportEditWizard extends eZWizardBase
             }
         }
 
-        if ( $wizardClass->hasVariable( 'import_id' ) && $wizardClass->variable( 'import_id' ) )
-        {
-            $wizardClass->WizardURL = '/syndication/import_edit/' . (int)$wizardClass->variable( 'import_id' );
-        }
 
         return $wizardClass;
     }

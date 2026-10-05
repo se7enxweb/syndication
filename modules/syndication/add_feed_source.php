@@ -48,6 +48,12 @@ if ( !$step )
 }
 
 $http = eZHttpTool::instance();
+if ( !$feedID || !eZSyndicationFeed::fetch( (int)$feedID, false ) )
+{
+    eZSyndicationUI::notice( 'warning', ezpI18n::tr( 'extension/syndication', 'Sources are added to a feed. Open a feed and use "Add a source".' ) );
+    return $module->redirectToView( 'list' );
+}
+
 $syndicationAction = new SyndicationAction( $module );
 $syndicationFeed = eZSyndicationFeed::fetchDraft( $feedID );
 
@@ -62,18 +68,28 @@ switch( (int)$step )
 
     case 2:
     {
+        $sourceType = $http->hasPostVariable( 'SourceType' ) ? $http->postVariable( 'SourceType' ) : '';
+        if ( !in_array( $sourceType, array( 'tree', 'node' ), true ) )
+        {
+            return $module->redirectToView( 'add_feed_source', array( $feedID ) );
+        }
         return eZContentBrowse::browse( array( 'action_name' => 'SyndicationFeedSourceBrowse',
                                                'description_template' => 'design:syndication/add_feed_source/browse.tpl',
-                                               'from_page' => '/syndication/add_feed_source/' . $feedID . '/' . ( $step + 1 ) . '/source_type/' . $http->postVariable( 'SourceType' ) ),
+                                               'from_page' => '/syndication/add_feed_source/' . $feedID . '/' . ( $step + 1 ) . '/source_type/' . $sourceType ),
                                         $module );
     } break;
 
     case 3:
     {
-        $selectedNode = $http->postVariable( 'SelectedNodeIDArray' );
-        $selectedNode = $selectedNode[0];
+        $selectedNode = $http->hasPostVariable( 'SelectedNodeIDArray' ) ? (array)$http->postVariable( 'SelectedNodeIDArray' ) : array();
+        $selectedNode = $selectedNode ? (int)reset( $selectedNode ) : 0;
+        if ( !$selectedNode || !eZContentObjectTreeNode::fetch( $selectedNode ) )
+        {
+            eZSyndicationUI::notice( 'warning', ezpI18n::tr( 'extension/syndication', 'No node was selected, so no source was added.' ) );
+            return $module->redirectToView( 'edit', array( $feedID ) );
+        }
 
-        $syndicationFeedSource = $syndicationFeed->addSource( $selectedNode, $Params['SourceType'] );
+        $syndicationFeedSource = $syndicationFeed->addSource( $selectedNode, isset( $Params['SourceType'] ) ? $Params['SourceType'] : 'tree' );
         return $module->redirectToView( 'list_source_filter',
                                         array( $syndicationFeedSource->attribute( 'id' ) ) );
     } break;

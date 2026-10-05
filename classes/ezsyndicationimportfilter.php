@@ -173,18 +173,22 @@ class eZSyndicationImportFilter extends eZPersistentObject
 
      \param filter id
     */
-    function removeFilter( $ID = false )
+    static function removeFilter( $ID )
     {
-        if ( $ID !== false )
+        $filter = eZSyndicationImportFilter::fetch( $ID );
+        if ( $filter )
         {
-            $filter = eZSyndicationImportFilter::fetch( $ID );
-            if ( $filter )
-            {
-                $filter->remove();
-            }
-            return;
+            $filter->removeFilterObject();
+            return true;
         }
+        return false;
+    }
 
+    /*!
+     Remove this filter row.
+    */
+    function removeFilterObject()
+    {
         eZPersistentObject::remove();
     }
 

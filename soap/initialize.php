@@ -99,7 +99,7 @@ function fetchSyndicationFeedContentObject( $feedID, $remoteID )
     $contents = eZSyndicationFeedCacheManager::readObjectCache( $feedID, $remoteID );
 
     // escape xml entities, so they are not recognized as entities by DOM
-    $contents = str_replace( '&', '&amp;', $contents );
+    $contents = str_replace( '&', '&amp;', (string)$contents );
     return $contents;
 }
 
@@ -116,8 +116,12 @@ function fetchSyndicationFeedRelatedContentObject( $feedID, $remoteID, $relatedR
 function fetchSyndicationFeedObjectList( $feedID )
 {
     $syndicationFeed = eZSyndicationFeed::fetch( $feedID );
+    if ( !$syndicationFeed )
+    {
+        return '';
+    }
 
-    return $syndicationFeed->feedList();
+    return (string)$syndicationFeed->feedList();
 }
 
 function hostID()

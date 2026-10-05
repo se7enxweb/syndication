@@ -65,7 +65,7 @@ class SyndicationAction
     */
     function storeImport( $import )
     {
-        $http =& eZHttpTool::instance();
+        $http = eZHttpTool::instance();
 
         switch( $this->Module['Step'] )
         {

@@ -1,110 +1,82 @@
-{let base_uri=concat( 'syndication/pending_edit/', $import.id ) }
-<script type="text/javascript">
-<!--
-
-{literal}
-function setAllPending()
-{
-   selects = document.getElementsByTagName( 'select' );
-
-   for ( var i=0; i<selects.length; i++ )
-   {
-      if (selects[i].name.substring(0,11) == 'StatusMode_' )
-      {
-          selects[i].selectedIndex=1;
-      }
-   } 
-}
-{/literal}
-
--->
-</script>
+{ezcss_require( 'syndication.css' )}
+{def $base_uri = concat( 'syndication/pending_edit/', $import.id )}
 <form name="pending_edit" method="post" action={$base_uri|ezurl}>
+<div class="context-block syn">
+    <div class="box-header">
+        <h1 class="context-title">{'Items of the import "%name"'|i18n( 'extension/syndication',, hash( '%name', $import.name ) )|wash}</h1>
+        <div class="header-mainline"></div>
+    </div>
+    <div class="box-content">
 
-<div class="context-block">
-{* DESIGN: Header START *}<div class="box-header"><div class="box-tc"><div class="box-ml"><div class="box-mr"><div class="box-tl"><div class="box-tr">
-<h1 class="context-title">{'Syndication - Set object import status - %importName'|i18n( 'crm',, hash( '%importName', $import.name))}</h1>
+        {include uri='design:parts/syndication/notices.tpl' notices=$notices}
 
-{* DESIGN: Mainline *}<div class="header-mainline"></div>
+        <p class="syn-muted">{'Approve an item to have it imported by the next run, deny it to keep it out. Items that are installed or being installed cannot be changed.'|i18n( 'extension/syndication' )}</p>
 
-{* DESIGN: Header END *}</div></div></div></div></div></div>
-
-{* DESIGN: Content START *}<div class="box-ml"><div class="box-mr"><div class="box-content">
-
-{* Items per page selector. *}
-<div class="context-toolbar">
-<div class="block">
-<div class="left">
-{if $statusFilter|eq( -1 )}
-    <span class="current">{'All'|i18n( 'design/standard/syndication/list' )}</span>
-{else}
-    <a href={concat( $base_uri, '/(statusFilter)/-1' )|ezurl}>{'All'|i18n( 'design/standard/syndication/list' )}</a>
-{/if}
-{foreach $statusNameMap as $key => $name}
-    {if $statusFilter|eq( $key )}
-        <span class="current">{$statusNameMap[$key]|wash}</span>
-    {else}
-        <a href={concat( $base_uri, '/(statusFilter)/', $key )|ezurl}>{$statusNameMap[$key]|wash}</a>
-    {/if}
-{/foreach}
-</div>
-<div class="break"></div>
-</div>
-</div>
-<input type="button" value="Set all pending" onclick="javascript:setAllPending();" />
-{* Branch list table. *}
-<table class="list" cellspacing="0">
-<tr>
-    <th class="tight">{'ID'|i18n( 'crm' )}</th>
-    <th>{'Name'|i18n( 'crm' )}</th>
-    <th>{'View original'|i18n( 'crm' )}</th>
-    <th>{'Created'|i18n( 'crm' )}</th>
-    <th>{'Modified'|i18n( 'crm' )}</th>
-    <th class="tight">{'Current status'|i18n( 'crm' )}</th>
-    <th class="tight">{'Approve'|i18n( 'crm' )}</th>
-</tr>
-{section loop=$statusList sequence=array( bglight, bgdark )}
-    <input name="StatusIDList[]" type="hidden" value="{$:item.id}" />
-    <tr class="{$sequence}">
-        <td>{$:item.id}</td>
-        <td>{$:item.feed_item.option_array.name|wash}</td>
-        <td><a href="{$:item.feed_item.option_array.original_url}" target="TOP">[{'open in new window'|i18n( 'syndication' )}]</a></td>
-        <td>{$:item.feed_item.option_array.published|datetime( 'custom', '%H:%i %D %j. %M' )}</td>
-        <td>{$:item.feed_item.option_array.modified|datetime( 'custom', '%H:%i %D %j. %M' )}</td>
-        <td><div title="{$:item.option_array.error|wash}">{$statusNameMap[$:item.status]|wash}</div></td>
-        <td>
-        {if $allowChangeFromStatusList|contains( $:item.status )}
-            <select name="StatusMode_{$:item.id}">
-            {foreach $allowUserStatusList as $status}
-                <option value="{$status}" {cond( $:item.status|eq( $status ), 'selected="selected"', '' )}>{$statusNameMap[$status]|wash}</option>
+        <p class="syn-status-facts">
+            {if eq( $statusFilter, -1 )}<span class="syn-pill is-info">{'All'|i18n( 'extension/syndication' )}</span>{else}<a class="syn-pill" href={$base_uri|ezurl}>{'All'|i18n( 'extension/syndication' )}</a>{/if}
+            {foreach $statusNameMap as $key => $name}
+                {if eq( $statusFilter, $key )}<span class="syn-pill is-info">{$name|wash}</span>{else}<a class="syn-pill" href={concat( $base_uri, '/(statusFilter)/', $key )|ezurl}>{$name|wash}</a>{/if}
             {/foreach}
-            </select>
+        </p>
+
+        {if $statusList|count}
+        <p><button class="button" type="button" id="syn-set-pending">{'Approve all that can be changed'|i18n( 'extension/syndication' )}</button></p>
+        <table class="list syn-table">
+            <tr>
+                <th class="tight">{'ID'|i18n( 'extension/syndication' )}</th>
+                <th>{'Name'|i18n( 'extension/syndication' )}</th>
+                <th>{'Original'|i18n( 'extension/syndication' )}</th>
+                <th>{'Created'|i18n( 'extension/syndication' )}</th>
+                <th>{'Modified'|i18n( 'extension/syndication' )}</th>
+                <th>{'Status'|i18n( 'extension/syndication' )}</th>
+                <th class="tight">{'Approve'|i18n( 'extension/syndication' )}</th>
+            </tr>
+            {foreach $statusList as $item sequence array( 'bglight', 'bgdark' ) as $seq}
+            <tr class="{$seq}">
+                <td>{$item.id}<input name="StatusIDList[]" type="hidden" value="{$item.id}" /></td>
+                <td class="syn-wrap">{$item.feed_item.option_array.name|wash}</td>
+                <td>{if $item.feed_item.option_array.original_url}<a href="{$item.feed_item.option_array.original_url|wash}" target="_blank" rel="noopener noreferrer">{'open'|i18n( 'extension/syndication' )}</a>{/if}</td>
+                <td>{if $item.feed_item.option_array.published}{$item.feed_item.option_array.published|l10n( 'shortdatetime' )}{/if}</td>
+                <td>{if $item.feed_item.option_array.modified}{$item.feed_item.option_array.modified|l10n( 'shortdatetime' )}{/if}</td>
+                <td><span class="syn-pill {cond( eq( $item.status, 3 ), 'is-ok', eq( $item.status, 4 ), 'is-bad', eq( $item.status, 1 ), 'is-info', eq( $item.status, 2 ), 'is-warn', 'is-muted' )}" title="{$item.option_array.error|wash}">{$statusNameMap[$item.status]|wash}</span></td>
+                <td>
+                {if $allowChangeFromStatusList|contains( $item.status )}
+                    <select name="StatusMode_{$item.id}" data-syn-changeable="1">
+                    {foreach $allowUserStatusList as $status}
+                        <option value="{$status}"{if eq( $item.status, $status )} selected="selected"{/if}>{$statusNameMap[$status]|wash}</option>
+                    {/foreach}
+                    </select>
+                {/if}
+                </td>
+            </tr>
+            {/foreach}
+        </table>
+        <div class="syn-pager">
+            <span>{'%count items'|i18n( 'extension/syndication',, hash( '%count', $statusListCount ) )}</span>
+            {include name=navigator uri='design:navigator/google.tpl' page_uri=$base_uri view_parameters=$view_parameters item_count=$statusListCount item_limit=$view_parameters.limit}
+        </div>
+        {else}
+        <div class="syn-empty"><p>{'No item has this status.'|i18n( 'extension/syndication' )}</p></div>
         {/if}
-        </td>
-    </tr>
-{/section}
-</table>
-
-{* Navigator. *}
-<div class="context-toolbar">
-{include name=navigator
-         uri='design:navigator/google.tpl'
-         page_uri=$base_uri
-         view_parameters=$view_parameters
-         item_count=$statusListCount
-         item_limit=$view_parameters.limit}
+    </div>
+    <div class="controlbar">
+        <div class="block">
+            <input class="defaultbutton" name="Update" type="submit" value="{'Save the changes'|i18n( 'extension/syndication' )|wash}" />
+            <a class="button" href={concat( 'syndication/import_info/', $import.id )|ezurl}>{'Back to the import'|i18n( 'extension/syndication' )}</a>
+        </div>
+    </div>
 </div>
-
-{* DESIGN: Content END *}</div></div></div>
-
-{* Buttons. *}
-<div class="controlbar">
-{* DESIGN: Control bar START *}<div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-tc"><div class="box-bl"><div class="box-br">
-<div align="right">
-    <input class="button" name="Update" type="submit" value="{'Update'|i18n( 'crm' )}" />
-</div>
-{* DESIGN: Control bar END *}</div></div></div></div></div></div>
-
 </form>
-
-{/let}
+<script>
+(function () {ldelim}
+    var button = document.getElementById('syn-set-pending');
+    if (!button) {ldelim} return; {rdelim}
+    button.addEventListener('click', function () {ldelim}
+        document.querySelectorAll('select[data-syn-changeable]').forEach(function (select) {ldelim}
+            for (var i = 0; i < select.options.length; i++) {ldelim}
+                if (select.options[i].value === '1') {ldelim} select.selectedIndex = i; {rdelim}
+            {rdelim}
+        {rdelim});
+    {rdelim});
+{rdelim})();
+</script>

@@ -104,6 +104,7 @@ class eZFilterSection extends eZSyndicationFilter
     function setEditTPLVariables( &$tpl )
     {
         $tpl->setVariable( 'section_array', eZSection::fetchList() );
+        $tpl->setVariable( 'default_section', (int)$this->attribute( eZFilterSection::DATA_FIELD ) );
     }
 
     /*!

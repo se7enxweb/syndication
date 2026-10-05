@@ -1,52 +1,84 @@
 <?php
 //
-// Created on: <12-Oct-2004 11:52:07 hovik>
-//
 // Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
 // Copyright (C) 1999-2008 eZ Systems AS. All rights reserved.
 //
-// This source file is part of the eZ Publish (tm) Open Source Content
-// Management System.
-//
 // This file may be distributed and/or modified under the terms of the
-// "GNU General Public License" version 2 as published by the Free
-// Software Foundation and appearing in the file LICENSE.GPL included in
-// the packaging of this file.
-//
-// Licencees holding valid "eZ Publish professional licences" may use this
-// file in accordance with the "eZ Publish professional licence" Agreement
-// provided with the Software.
-//
-// This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING
-// THE WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-// PURPOSE.
-//
-// The "eZ Publish professional licence" is available at
-// http://ez.no/products/licences/professional/. For pricing of this licence
-// please contact us via e-mail to licence@ez.no. Further contact
-// information is available at http://ez.no/home/contact/.
-//
-// The "GNU General Public License" (GPL) is available at
-// http://www.gnu.org/copyleft/gpl.html.
-//
-// Contact licence@ez.no if any conditions of this licencing isn't clear to
-// you.
+// "GNU General Public License" version 2 (or any later version).
 //
 
 /*! \file menu.php
+    The start page of the module: what is exported, what is imported, the last runs and the problems found.
+    Actions: create the tables, run every export or every import now.
 */
 
-/*!
-  \brief Handle import or export selection menu.
+$module = $Params['Module'];
+$http = eZHTTPTool::instance();
+$user = eZUser::currentUser();
 
-*/
+$canAccess = function ( $function ) use ( $user )
+{
+    $access = $user->hasAccessTo( 'syndication', $function );
+    return $access['accessWord'] != 'no';
+};
+$canEditExport = $canAccess( 'edit_export' );
+$canEditImport = $canAccess( 'edit_import' );
 
-$http = eZHttpTool::instance();
+if ( $http->hasPostVariable( 'InstallTablesButton' ) )
+{
+    if ( $canEditExport && $canEditImport )
+    {
+        $messages = array();
+        if ( eZSyndicationInstaller::install( null, $messages ) )
+        {
+            eZSyndicationUI::notice( 'feedback', ezpI18n::tr( 'extension/syndication', 'The tables were created.' ) );
+        }
+        else
+        {
+            eZSyndicationUI::notice( 'error', ezpI18n::tr( 'extension/syndication', 'The tables could not be created: %reason', null, array( '%reason' => implode( ' ', $messages ) ) ) );
+        }
+    }
+    return $module->redirectToView( 'menu' );
+}
+else if ( ( $http->hasPostVariable( 'ExportAllButton' ) && $canEditExport || $http->hasPostVariable( 'FetchAllButton' ) && $canEditImport )
+          && !eZSyndicationInstaller::missingTables() )
+{
+    $export = $http->hasPostVariable( 'ExportAllButton' );
+    $error = '';
+    $jobID = eZSyndicationJob::start( $export ? 'export' : 'import', $export ? array() : array( '--fetch-only' ), $error );
+    if ( !$jobID )
+    {
+        eZSyndicationUI::notice( 'error', ezpI18n::tr( 'extension/syndication', 'The run could not be started: %reason', null, array( '%reason' => $error ) ) );
+        return $module->redirectToView( 'menu' );
+    }
+    return $module->redirectToView( 'menu', array(), array(), array( 'job' => $jobID ) );
+}
+
+$summary = eZSyndicationDashboard::summary();
+$recentFeeds = array();
+$recentImports = array();
+if ( !$summary['tables_missing'] )
+{
+    $recentFeeds = array_slice( (array)eZSyndicationFeed::fetchList( 0, 5 ), 0, 5 );
+    $recentImports = array_slice( (array)eZSyndicationImport::fetchList( 0, 5 ), 0, 5 );
+}
+
 $tpl = eZTemplate::factory();
+$tpl->setVariable( 'summary', $summary );
+$tpl->setVariable( 'notices', eZSyndicationUI::takeNotices() );
+$userParameters = isset( $Params['UserParameters'] ) ? $Params['UserParameters'] : array();
+$tpl->setVariable( 'job_id', isset( $userParameters['job'] ) && eZSyndicationJob::isID( $userParameters['job'] ) ? $userParameters['job'] : '' );
+$tpl->setVariable( 'recent_feeds', $recentFeeds );
+$tpl->setVariable( 'recent_imports', $recentImports );
+$tpl->setVariable( 'can_install', $canEditExport && $canEditImport );
+$tpl->setVariable( 'can_edit_export', $canEditExport );
+$tpl->setVariable( 'can_edit_import', $canEditImport );
+$tpl->setVariable( 'can_create_feed', eZSyndicationFeed::canCreate() );
+$tpl->setVariable( 'can_create_import', eZSyndicationImport::canCreate() );
 
 $Result = array();
-$Result['content'] = $tpl->fetch( "design:syndication/menu.tpl" );
-$Result['path'] = array( array( 'url' => 'syndication/menu',
-                                'text' => ezpI18n::tr( 'syndication/menu', 'Syndication' ) ) );
+$Result['content'] = $tpl->fetch( 'design:syndication/menu.tpl' );
+$Result['path'] = array( array( 'url' => false,
+                                'text' => ezpI18n::tr( 'extension/syndication', 'Syndication' ) ) );
 
 ?>
