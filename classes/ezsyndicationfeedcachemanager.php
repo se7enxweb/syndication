@@ -289,7 +289,7 @@ class eZSyndicationFeedCacheManager
 
      \return Serialized object
     */
-    function readRelatedObjectCache( $feedID, $remoteID, $relatedRemoteID )
+    public static function readRelatedObjectCache( $feedID, $remoteID, $relatedRemoteID )
     {
         $syndicationCache = eZSyndicationFeedCacheManager::initialize( $feedID );
         $cacheInfo = $syndicationCache->cacheInfo( $relatedRemoteID );
