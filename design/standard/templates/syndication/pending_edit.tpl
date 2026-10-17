@@ -67,16 +67,4 @@
     </div>
 </div>
 </form>
-<script>
-(function () {ldelim}
-    var button = document.getElementById('syn-set-pending');
-    if (!button) {ldelim} return; {rdelim}
-    button.addEventListener('click', function () {ldelim}
-        document.querySelectorAll('select[data-syn-changeable]').forEach(function (select) {ldelim}
-            for (var i = 0; i < select.options.length; i++) {ldelim}
-                if (select.options[i].value === '1') {ldelim} select.selectedIndex = i; {rdelim}
-            {rdelim}
-        {rdelim});
-    {rdelim});
-{rdelim})();
-</script>
+{ezscript( array( 'syndication_admin.js' ) )}
