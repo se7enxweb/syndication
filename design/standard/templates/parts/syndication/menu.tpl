@@ -1,11 +1,10 @@
-{include uri='design:parts/ini_menu.tpl' ini_section='Leftmenu_syndication' i18n_hash=hash(
-    'syndication',        'Syndication'|i18n( 'extension/syndication' ),
-    'feeds',              'Feeds'|i18n( 'extension/syndication' ),
-    'imports',            'Imports'|i18n( 'extension/syndication' ),
-    'sources',            'Feed Sources'|i18n( 'extension/syndication' )
-)}
+{*
+  The left menu of the module: the links come from menu.ini [Leftmenu_syndication] (parts/syndication/menu_items.tpl).
+  Used in every admin design without its own copy; admin4 has its own (design/admin4), with admin4's width switch.
+*}
+{include uri='design:parts/syndication/menu_items.tpl'}
 
-{* Left menu width control. *}
+{* Left menu width control: the links of the classic admin designs, as the kernel's menus there draw them. *}
 <div id="widthcontrol-links" class="widthcontrol">
 <p>
 {switch match=ezpreference( 'admin_left_menu_size' )}
