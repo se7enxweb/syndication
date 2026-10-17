@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.8
+
+- Updated: The administration pages run without inline code (a Content Security Policy without 'unsafe-inline'): the confirmations, the check-all boxes, the progress of a background run and the "Approve all" button are in design/standard/javascript/syndication_admin.js.
+
 ## 1.3.4
 
 - Removed: stray .DS_Store files and a leftover patch reject (modules/syndication/import_edit/ezimporteditfeed.php.rej); .gitignore keeps them out.
