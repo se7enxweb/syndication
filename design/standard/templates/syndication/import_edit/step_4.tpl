@@ -3,7 +3,7 @@
 
 <div class="block">
     <label>{'Location for the imported content'|i18n( 'extension/syndication' )}</label>
-    {if $imp.placement_node}<strong>{$imp.placement_node.name|wash}</strong>{else}<span class="syn-pill is-warn">{'not chosen'|i18n( 'extension/syndication' )}</span>{/if}
+    {if $imp.placement_node}<strong>{$imp.placement_node.name|wash}</strong>{else}<span class="a4-badge is-warn">{'not chosen'|i18n( 'extension/syndication' )}</span>{/if}
     <input class="button" type="submit" name="BrowseNodeLocation" value="{'Browse location'|i18n( 'extension/syndication' )|wash}" formnovalidate="formnovalidate" />
 </div>
 <div class="block">

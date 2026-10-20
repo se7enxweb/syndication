@@ -66,7 +66,7 @@
                 </tr>
                 {foreach $syndication_feed.draft_source_list as $source sequence array( 'bglight', 'bgdark' ) as $seq}
                 <tr class="{$seq}">
-                    <td>{if $source.node}<a href={$source.node.url_alias|ezurl}>{$source.node.name|wash}</a>{else}<span class="syn-pill is-bad">{'node %id is missing'|i18n( 'extension/syndication',, hash( '%id', $source.node_id ) )}</span>{/if}</td>
+                    <td>{if $source.node}<a href={$source.node.url_alias|ezurl}>{$source.node.name|wash}</a>{else}<span class="a4-badge is-bad">{'node %id is missing'|i18n( 'extension/syndication',, hash( '%id', $source.node_id ) )}</span>{/if}</td>
                     <td>{$source.type_string|wash}</td>
                     <td class="syn-wrap">{if $source.node}{$source.node.path_identification_string|wash}{/if}</td>
                     <td><a class="button" href={concat( 'syndication/list_source_filter/', $source.id, '/(generate_drafts)/1' )|ezurl}>{'Edit filters'|i18n( 'extension/syndication' )}</a></td>

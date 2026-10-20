@@ -38,9 +38,9 @@
                 <span><strong>{$feeds.sources}</strong> {'sources'|i18n( 'extension/syndication' )}</span>
             </div>
             <div>
-                {if $summary.soap.enabled}<span class="syn-pill is-ok">{'SOAP on'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-warn">{'SOAP off'|i18n( 'extension/syndication' )}</span>{/if}
-                {if $summary.problems|count}<span class="syn-pill is-warn">{'%count to look at'|i18n( 'extension/syndication',, hash( '%count', $summary.problems|count ) )}</span>
-                {else}<span class="syn-pill is-ok">{'No problems'|i18n( 'extension/syndication' )}</span>{/if}
+                {if $summary.soap.enabled}<span class="a4-badge is-ok">{'SOAP on'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge is-warn">{'SOAP off'|i18n( 'extension/syndication' )}</span>{/if}
+                {if $summary.problems|count}<span class="a4-badge is-warn">{'%count to look at'|i18n( 'extension/syndication',, hash( '%count', $summary.problems|count ) )}</span>
+                {else}<span class="a4-badge is-ok">{'No problems'|i18n( 'extension/syndication' )}</span>{/if}
             </div>
         </div>
 
@@ -101,7 +101,7 @@
             <ul class="syn-problems">
                 {foreach $summary.problems as $problem}
                 <li>
-                    <span class="syn-pill {cond( eq( $problem.level, 'error' ), 'is-bad', eq( $problem.level, 'warning' ), 'is-warn', 'is-info' )}">{cond( eq( $problem.level, 'error' ), 'Problem'|i18n( 'extension/syndication' ), eq( $problem.level, 'warning' ), 'Warning'|i18n( 'extension/syndication' ), 'Hint'|i18n( 'extension/syndication' ) )}</span>
+                    <span class="a4-badge {cond( eq( $problem.level, 'error' ), 'is-bad', eq( $problem.level, 'warning' ), 'is-warn', 'is-info' )}">{cond( eq( $problem.level, 'error' ), 'Problem'|i18n( 'extension/syndication' ), eq( $problem.level, 'warning' ), 'Warning'|i18n( 'extension/syndication' ), 'Hint'|i18n( 'extension/syndication' ) )}</span>
                     <span>{$problem.text|wash}{if $problem.url} <a href={$problem.url|ezurl}>{'Open'|i18n( 'extension/syndication' )}</a>{/if}</span>
                 </li>
                 {/foreach}
@@ -118,7 +118,7 @@
                 <tr><th>{'Name'|i18n( 'extension/syndication' )}</th><th>{'Active'|i18n( 'extension/syndication' )}</th><th class="syn-num">{'Sources'|i18n( 'extension/syndication' )}</th></tr>
                 {foreach $recent_feeds as $feed sequence array( 'bglight', 'bgdark' ) as $seq}
                 <tr class="{$seq}"><td><a href={concat( 'syndication/feed_info/', $feed.id )|ezurl}>{$feed.name|wash}</a></td>
-                    <td>{if $feed.enabled}<span class="syn-pill is-ok">{'yes'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-muted">{'no'|i18n( 'extension/syndication' )}</span>{/if}</td>
+                    <td>{if $feed.enabled}<span class="a4-badge is-ok">{'yes'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge">{'no'|i18n( 'extension/syndication' )}</span>{/if}</td>
                     <td class="syn-num">{$feed.source_list|count}</td></tr>
                 {/foreach}
             </table>
@@ -131,7 +131,7 @@
                 <tr><th>{'Name'|i18n( 'extension/syndication' )}</th><th>{'Active'|i18n( 'extension/syndication' )}</th><th class="syn-num">{'Waiting'|i18n( 'extension/syndication' )}</th><th class="syn-num">{'Failed'|i18n( 'extension/syndication' )}</th></tr>
                 {foreach $recent_imports as $import sequence array( 'bglight', 'bgdark' ) as $seq}
                 <tr class="{$seq}"><td><a href={concat( 'syndication/import_info/', $import.id )|ezurl}>{$import.name|wash}</a></td>
-                    <td>{if $import.enabled}<span class="syn-pill is-ok">{'yes'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-muted">{'no'|i18n( 'extension/syndication' )}</span>{/if}</td>
+                    <td>{if $import.enabled}<span class="a4-badge is-ok">{'yes'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge">{'no'|i18n( 'extension/syndication' )}</span>{/if}</td>
                     <td class="syn-num">{$import.pending_count}</td><td class="syn-num">{$import.failed_count}</td></tr>
                 {/foreach}
             </table>

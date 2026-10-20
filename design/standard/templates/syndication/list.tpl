@@ -53,7 +53,7 @@
                 {if $can_remove}<td><input type="checkbox" name="RemoveFeedIDArray[]" value="{$feed.id}" aria-label="{'Select'|i18n( 'extension/syndication' )|wash} {$feed.name|wash}" /></td>{/if}
                 <td class="syn-wrap"><a href={concat( 'syndication/feed_info/', $feed.id )|ezurl}>{cond( $feed.name, $feed.name|wash, concat( '(', 'no name'|i18n( 'extension/syndication' ), ')' ) )}</a></td>
                 <td><code>{$feed.identifier|wash}</code></td>
-                <td>{if $feed.enabled}<span class="syn-pill is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-muted">{'not active'|i18n( 'extension/syndication' )}</span>{/if}</td>
+                <td>{if $feed.enabled}<span class="a4-badge is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge">{'not active'|i18n( 'extension/syndication' )}</span>{/if}</td>
                 <td class="syn-num">{$feed.source_list|count}</td>
                 <td>{$feed.id}</td>
                 <td class="syn-actions">
