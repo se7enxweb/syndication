@@ -11,7 +11,8 @@
 */
 
 $jobID = (string)$Params['JobID'];
-$state = eZSyndicationJob::isID( $jobID ) ? eZSyndicationJob::status( $jobID ) : false;
+// only the user who started the run; any other job is answered as an unknown one
+$state = eZSyndicationJob::isID( $jobID ) && eZSyndicationJob::accessible( $jobID ) ? eZSyndicationJob::status( $jobID ) : false;
 
 header( 'Content-Type: application/json; charset=utf-8' );
 header( 'Cache-Control: no-store' );

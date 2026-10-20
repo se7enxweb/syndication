@@ -35,7 +35,7 @@ class Import extends \Exponential\Runnable\Command
             {
                 \eZSyndicationJob::write( $jobID, array( 'id' => $jobID, 'command' => 'import', 'status' => $status,
                                                           'started' => $state ? $state['started'] : time(), 'finished' => $status == 'running' ? null : time(),
-                                                          'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'result' => $result ) );
+                                                          'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'user_id' => $state && isset( $state['user_id'] ) ? (int)$state['user_id'] : 0, 'result' => $result ) );
                 \eZSyndicationJob::prune();
             }
         };
