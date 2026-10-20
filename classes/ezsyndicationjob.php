@@ -163,9 +163,18 @@ class eZSyndicationJob
     */
     static function accessible( $id )
     {
-        $file = self::directory() . '/' . $id . '.json';
+        $file = static::directory() . '/' . $id . '.json';
         $state = self::isID( $id ) && is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
-        return is_array( $state ) && self::belongsTo( $state, (int)eZUser::currentUserID() );
+        return is_array( $state ) && self::belongsTo( $state, static::currentUserID() );
+    }
+
+    /*!
+     \static
+     \return the id of the current user (a seam: a test subclass answers it without a session)
+    */
+    protected static function currentUserID()
+    {
+        return (int)eZUser::currentUserID();
     }
 
     /*!
