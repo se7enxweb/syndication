@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.9
+
+- Added: Translations in Croatian, Czech, Danish, Dutch, Italian, Norwegian, Polish, Brazilian Portuguese, Swedish and Turkish.
+
 ## 1.3.8
 
 - Updated: The administration pages run without inline code (a Content Security Policy without 'unsafe-inline'): the confirmations, the check-all boxes, the progress of a background run and the "Approve all" button are in design/standard/javascript/syndication_admin.js.
