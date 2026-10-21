@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.10
+
+- Fixed: The status and the log lines of a background export or import (syndication/job) are answered only for the user who started the run. A job records the id of the user who starts it; a job written by an earlier version has no owner and can no longer be read (it is pruned as before).
+- Updated: The status pages use the shared .a4-badge classes of the administration's components.css instead of a pill of their own.
+
 ## 1.3.9
 
 - Added: Translations in Croatian, Czech, Danish, Dutch, Italian, Norwegian, Polish, Brazilian Portuguese, Swedish and Turkish.
