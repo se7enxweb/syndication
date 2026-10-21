@@ -12,7 +12,7 @@
 
         <p class="syn-status-facts">
             {foreach $step_names as $index => $step_name}
-                <span class="syn-pill {cond( eq( $index|sum( 1 ), $step ), 'is-info', lt( $index|sum( 1 ), $step ), 'is-ok', 'is-muted' )}">{$index|sum( 1 )}. {$step_name|wash}</span>
+                <span class="a4-badge {cond( eq( $index|sum( 1 ), $step ), 'is-info', lt( $index|sum( 1 ), $step ), 'is-ok', '' )}">{$index|sum( 1 )}. {$step_name|wash}</span>
             {/foreach}
         </p>
 

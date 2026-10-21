@@ -12,8 +12,8 @@
 
         <div class="syn-status">
             <div>
-                {if $feed.enabled}<span class="syn-pill is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-warn">{'not active'|i18n( 'extension/syndication' )}</span>{/if}
-                {if $soap_enabled}<span class="syn-pill is-ok">{'SOAP on'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-warn">{'SOAP off'|i18n( 'extension/syndication' )}</span>{/if}
+                {if $feed.enabled}<span class="a4-badge is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge is-warn">{'not active'|i18n( 'extension/syndication' )}</span>{/if}
+                {if $soap_enabled}<span class="a4-badge is-ok">{'SOAP on'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge is-warn">{'SOAP off'|i18n( 'extension/syndication' )}</span>{/if}
             </div>
             <div class="syn-status-facts">
                 <span><strong>{$sources|count}</strong> {'sources'|i18n( 'extension/syndication' )}</span>
@@ -61,10 +61,10 @@
                 <tr><th>{'Name'|i18n( 'extension/syndication' )}</th><th>{'Type'|i18n( 'extension/syndication' )}</th><th>{'Location'|i18n( 'extension/syndication' )}</th><th>{'Filters'|i18n( 'extension/syndication' )}</th></tr>
                 {foreach $sources as $row sequence array( 'bglight', 'bgdark' ) as $seq}
                 <tr class="{$seq}">
-                    <td>{if $row.node}<a href={$row.node.url_alias|ezurl}>{$row.node.name|wash}</a>{else}<span class="syn-pill is-bad">{'node %id is missing'|i18n( 'extension/syndication',, hash( '%id', $row.source.node_id ) )}</span>{/if}</td>
+                    <td>{if $row.node}<a href={$row.node.url_alias|ezurl}>{$row.node.name|wash}</a>{else}<span class="a4-badge is-bad">{'node %id is missing'|i18n( 'extension/syndication',, hash( '%id', $row.source.node_id ) )}</span>{/if}</td>
                     <td>{$row.source.type_string|wash}</td>
                     <td class="syn-wrap">{if $row.node}{$row.node.path_identification_string|wash}{/if}</td>
-                    <td>{if $row.filters|count}{foreach $row.filters as $filter}<span class="syn-pill is-info">{$filter.name|wash}{if $filter.limitation}: {$filter.limitation|wash}{/if}</span> {/foreach}{else}<span class="syn-muted">{'all objects'|i18n( 'extension/syndication' )}</span>{/if}</td>
+                    <td>{if $row.filters|count}{foreach $row.filters as $filter}<span class="a4-badge is-info">{$filter.name|wash}{if $filter.limitation}: {$filter.limitation|wash}{/if}</span> {/foreach}{else}<span class="syn-muted">{'all objects'|i18n( 'extension/syndication' )}</span>{/if}</td>
                 </tr>
                 {/foreach}
             </table>

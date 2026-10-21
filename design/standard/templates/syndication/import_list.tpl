@@ -54,11 +54,11 @@
             <tr class="{$seq}">
                 {if $can_remove}<td><input type="checkbox" name="RemoveImportIDArray[]" value="{$import.id}" aria-label="{'Select'|i18n( 'extension/syndication' )|wash} {$import.name|wash}" /></td>{/if}
                 <td class="syn-wrap"><a href={concat( 'syndication/import_info/', $import.id )|ezurl}>{cond( $import.name, $import.name|wash, concat( '(', 'no name'|i18n( 'extension/syndication' ), ')' ) )}</a></td>
-                <td>{if $import.enabled}<span class="syn-pill is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-muted">{'not active'|i18n( 'extension/syndication' )}</span>{/if}</td>
+                <td>{if $import.enabled}<span class="a4-badge is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge">{'not active'|i18n( 'extension/syndication' )}</span>{/if}</td>
                 <td class="syn-num">{$import.installed_count|wash}</td>
                 <td class="syn-num">{$import.installing_count|wash}</td>
                 <td class="syn-num">{$import.pending_count|wash}</td>
-                <td class="syn-num">{if $import.failed_count}<span class="syn-pill is-bad">{$import.failed_count|wash}</span>{else}0{/if}</td>
+                <td class="syn-num">{if $import.failed_count}<span class="a4-badge is-bad">{$import.failed_count|wash}</span>{else}0{/if}</td>
                 <td class="syn-num">{$import.none_count|wash}</td>
                 <td class="syn-actions">
                     <a class="button" href={concat( 'syndication/import_info/', $import.id )|ezurl}>{'Details'|i18n( 'extension/syndication' )}</a>

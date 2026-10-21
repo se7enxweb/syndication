@@ -29,7 +29,7 @@ class Export extends \Exponential\Runnable\Command
         {
             $state = \eZSyndicationJob::status( $jobID );
             \eZSyndicationJob::write( $jobID, array( 'id' => $jobID, 'command' => 'export', 'status' => 'running', 'started' => $state ? $state['started'] : time(),
-                                                      'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'result' => null ) );
+                                                      'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'user_id' => $state && isset( $state['user_id'] ) ? (int)$state['user_id'] : 0, 'result' => null ) );
         }
         if ( \eZSyndicationInstaller::missingTables() )
         {
@@ -59,7 +59,7 @@ class Export extends \Exponential\Runnable\Command
             $state = \eZSyndicationJob::status( $jobID );
             \eZSyndicationJob::write( $jobID, array( 'id' => $jobID, 'command' => 'export', 'status' => $status,
                                                       'started' => $state ? $state['started'] : time(), 'finished' => time(),
-                                                      'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'result' => $result ) );
+                                                      'by' => $state && isset( $state['by'] ) ? $state['by'] : 'job', 'user_id' => $state && isset( $state['user_id'] ) ? (int)$state['user_id'] : 0, 'result' => $result ) );
             \eZSyndicationJob::prune();
         }
     }

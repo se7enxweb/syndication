@@ -66,7 +66,8 @@ class eZSyndicationJob
         $id = date( 'YmdHis' ) . '-' . bin2hex( random_bytes( 4 ) );
         $user = eZUser::currentUser();
         self::write( $id, array( 'id' => $id, 'command' => $command, 'status' => 'starting', 'started' => time(),
-                                 'by' => $user->attribute( 'login' ), 'result' => null ) );
+                                 'by' => $user->attribute( 'login' ), 'user_id' => (int)$user->attribute( 'contentobject_id' ),
+                                 'result' => null ) );
         touch( $dir . '/' . $id . '.log' );
 
         $line = array( $setsid, '-f', $php, 'extension/syndication/bin/php/' . $command . '.php', '--job=' . $id, '-q' );
@@ -152,6 +153,38 @@ class eZSyndicationJob
             $state['result'] = array( 'error' => 'The job stopped without a result.' );
         }
         return $state;
+    }
+
+    /*!
+     \static
+     \return true when the current user started the job $id. The state and the log of a run tell about feeds,
+             imports and their errors; only the user who started it gets them. An unknown job, or one without an
+             owner, is refused.
+    */
+    static function accessible( $id )
+    {
+        $file = static::directory() . '/' . $id . '.json';
+        $state = self::isID( $id ) && is_file( $file ) ? json_decode( (string)file_get_contents( $file ), true ) : false;
+        return is_array( $state ) && self::belongsTo( $state, static::currentUserID() );
+    }
+
+    /*!
+     \static
+     \return the id of the current user (a seam: a test subclass answers it without a session)
+    */
+    protected static function currentUserID()
+    {
+        return (int)eZUser::currentUserID();
+    }
+
+    /*!
+     \static
+     \return true when the job state $state was started by the user $userID (the user id start() stores); a state
+             without one, written before it was stored, belongs to nobody
+    */
+    static function belongsTo( $state, $userID )
+    {
+        return is_array( $state ) && $userID > 0 && isset( $state['user_id'] ) && (int)$state['user_id'] === (int)$userID;
     }
 
     /*!

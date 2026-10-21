@@ -12,8 +12,8 @@
 
         <div class="syn-status">
             <div>
-                {if $import.enabled}<span class="syn-pill is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-warn">{'not active'|i18n( 'extension/syndication' )}</span>{/if}
-                {if $import.option_array.auto_import}<span class="syn-pill is-info">{'imports automatically'|i18n( 'extension/syndication' )}</span>{else}<span class="syn-pill is-muted">{'items wait for approval'|i18n( 'extension/syndication' )}</span>{/if}
+                {if $import.enabled}<span class="a4-badge is-ok">{'active'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge is-warn">{'not active'|i18n( 'extension/syndication' )}</span>{/if}
+                {if $import.option_array.auto_import}<span class="a4-badge is-info">{'imports automatically'|i18n( 'extension/syndication' )}</span>{else}<span class="a4-badge">{'items wait for approval'|i18n( 'extension/syndication' )}</span>{/if}
             </div>
             <div class="syn-status-facts">
                 <span><strong>{$import.installed_count}</strong> {'installed'|i18n( 'extension/syndication' )}</span>
@@ -29,8 +29,8 @@
                 <dl class="syn-kv">
                     <dt>{'Server'|i18n( 'extension/syndication' )}</dt><dd><code>{$server|wash}</code></dd>
                     <dt>{'Login'|i18n( 'extension/syndication' )}</dt><dd>{if $has_login}{$import.option_array.login|wash} (<span class="syn-muted">{'password is stored, not shown'|i18n( 'extension/syndication' )}</span>){else}<span class="syn-muted">{'none'|i18n( 'extension/syndication' )}</span>{/if}</dd>
-                    <dt>{'Feed ID on the server'|i18n( 'extension/syndication' )}</dt><dd>{if $import.feed_id}{$import.feed_id}{else}<span class="syn-pill is-warn">{'not chosen'|i18n( 'extension/syndication' )}</span>{/if}</dd>
-                    <dt>{'Location for content'|i18n( 'extension/syndication' )}</dt><dd>{if $import.placement_node}<a href={$import.placement_node.url_alias|ezurl}>{$import.placement_node.name|wash}</a>{else}<span class="syn-pill is-warn">{'not chosen'|i18n( 'extension/syndication' )}</span>{/if}</dd>
+                    <dt>{'Feed ID on the server'|i18n( 'extension/syndication' )}</dt><dd>{if $import.feed_id}{$import.feed_id}{else}<span class="a4-badge is-warn">{'not chosen'|i18n( 'extension/syndication' )}</span>{/if}</dd>
+                    <dt>{'Location for content'|i18n( 'extension/syndication' )}</dt><dd>{if $import.placement_node}<a href={$import.placement_node.url_alias|ezurl}>{$import.placement_node.name|wash}</a>{else}<span class="a4-badge is-warn">{'not chosen'|i18n( 'extension/syndication' )}</span>{/if}</dd>
                     <dt>{'Original placement'|i18n( 'extension/syndication' )}</dt><dd>{if $import.option_array.original_placement}{'yes'|i18n( 'extension/syndication' )}{else}{'no'|i18n( 'extension/syndication' )}{/if}</dd>
                     <dt>{'Related objects'|i18n( 'extension/syndication' )}</dt><dd>{if $import.option_array.include_related_objects}{'imported too'|i18n( 'extension/syndication' )}{else}{'not imported'|i18n( 'extension/syndication' )}{/if}</dd>
                 </dl>
@@ -63,7 +63,7 @@
                     <td>{if $row.name}{$row.name|wash}{else}<span class="syn-muted">{'not imported'|i18n( 'extension/syndication' )}</span>{/if}</td>
                     <td><code>{$row.remote_id|wash}</code></td>
                     <td>{$row.modified|l10n( 'shortdatetime' )}</td>
-                    <td><span class="syn-pill {cond( eq( $row.status, 3 ), 'is-ok', eq( $row.status, 4 ), 'is-bad', eq( $row.status, 1 ), 'is-info', eq( $row.status, 2 ), 'is-warn', 'is-muted' )}">{$row.status_name|wash}</span></td>
+                    <td><span class="a4-badge {cond( eq( $row.status, 3 ), 'is-ok', eq( $row.status, 4 ), 'is-bad', eq( $row.status, 1 ), 'is-info', eq( $row.status, 2 ), 'is-warn', '' )}">{$row.status_name|wash}</span></td>
                 </tr>
                 {/foreach}
             </table>

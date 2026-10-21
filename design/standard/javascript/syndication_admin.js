@@ -23,7 +23,7 @@
         } catch (e) {
             labels = {};
         }
-        var classes = { starting: 'is-info', running: 'is-warn', done: 'is-ok', failed: 'is-bad', unknown: 'is-muted' };
+        var classes = { starting: 'is-info', running: 'is-warn', done: 'is-ok', failed: 'is-bad', unknown: '' };
 
         function poll() {
             fetch(box.getAttribute('data-url'), { credentials: 'same-origin', headers: { 'Accept': 'application/json' } })
@@ -31,7 +31,7 @@
                 .then(function (job) {
                     var status = document.getElementById('syn-job-status');
                     status.textContent = labels[job.status] || job.status;
-                    status.className = 'syn-pill ' + (classes[job.status] || 'is-muted');
+                    status.className = ('a4-badge ' + (classes[job.status] || '')).trim();
                     document.getElementById('syn-job-log').textContent = (job.log || []).join('\n');
                     var result = job.result || {};
                     var parts = [];
