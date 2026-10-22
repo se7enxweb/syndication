@@ -1108,4 +1108,19 @@
         <translation>%count Einträge wurden geändert.</translation>
     </message>
 </context>
+<context>
+    <name>kernel/transfer</name>
+    <message>
+        <source>Syndication</source>
+        <translation>Syndication</translation>
+    </message>
+    <message>
+        <source>Keep folders in step between Exponential sites: one site offers them as feeds, the others import them and update the same items again and again.</source>
+        <translation>Ordner zwischen Exponential-Sites abgleichen: Eine Site bietet sie als Feeds an, die anderen importieren sie und aktualisieren dieselben Objekte immer wieder.</translation>
+    </message>
+    <message>
+        <source>Copy to another site…</source>
+        <translation>Auf eine andere Site kopieren …</translation>
+    </message>
+</context>
 </TS>

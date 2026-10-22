@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Added: Syndication declares itself in Exponential's transfer registry (`settings/kernelservices.ini.append.php`, kernel 6.0.15 and later). The kernel lists it in its "Which import or export tool do I need?" page, the other tools' "Looking for…?" boxes, the "Import and export" lists, an item's Import/Export menu ("Copy to another site…") and the administration's search.
+- Added: The Syndication dashboard shows the kernel's "Looking for another import or export?" box, and the module's left menu the "Import and export" list; on an older kernel both are left out.
+
 ## 1.3.11
 
 - Updated: The Syndication tab of the administration shows the rss icon (`Icon=rss` in `[Topmenu_syndication]` of menu.ini).
