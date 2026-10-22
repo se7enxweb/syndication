@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.11
+
+- Updated: The Syndication tab of the administration shows the rss icon (`Icon=rss` in `[Topmenu_syndication]` of menu.ini).
+- Updated: A modern README: how syndication works, requirements, installation with Composer and by hand, every setting, the export and import wizards step by step, console commands and cronjobs with examples, permissions, upgrading, known limits and troubleshooting. INSTALL.md points to it.
+- Updated: composer.json states PHP 8.0 or newer and the dom extension, suggests curl, and has support links and keywords; extension.xml has a `<metadata>` block (name, version, copyright, license, website) and its dependencies; ezinfo.php and extension.xml state version 1.3.11.
+
 ## 1.3.10
 
 - Fixed: The status and the log lines of a background export or import (syndication/job) are answered only for the user who started the run. A job records the id of the user who starts it; a job written by an earlier version has no owner and can no longer be read (it is pruned as before).
