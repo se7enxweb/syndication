@@ -1,30 +1,56 @@
 {
     "name": "se7enxweb/syndication",
-    "description": "Exponential syndication extension provides a Soap based client + server solution for content syncing from one installation of an Exponential site to another separate site. This provides for centralized user registration content syncing. Great for all smart developers!",
+    "description": "Content syndication between Exponential installations over SOAP: export parts of the content tree as feeds on one site and import them into another, with filters, approval, a dashboard, console commands and cronjob parts.",
     "type": "ezpublish-legacy-extension",
-    "keywords": [ "eZ Publish", "eZ Publish Legacy", "eZ Publish Platform", "syndication", "soap", "sync", "cronjob" ],
+    "keywords": [
+        "exponential",
+        "exponential legacy",
+        "extension",
+        "syndication",
+        "content sync",
+        "soap",
+        "import",
+        "export",
+        "cronjob"
+    ],
     "homepage": "https://github.com/se7enxweb/syndication",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name" : "7x",
+            "name": "7x",
             "homepage": "https://se7enx.com",
             "email": "info@se7enx.com",
             "role": "Maintainer"
         },
-	{
-            "name" : "eZ Systems",
+        {
+            "name": "eZ Systems",
             "homepage": "https://ez.no",
-            "email": "info@ez.no",
             "role": "Creator"
         }
     ],
+    "support": {
+        "issues": "https://github.com/se7enxweb/syndication/issues",
+        "source": "https://github.com/se7enxweb/syndication",
+        "docs": "https://github.com/se7enxweb/syndication#readme"
+    },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/se7enxweb"
+        }
+    ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-        "php": ">=5.0.0",
+        "php": ">=8.0",
+        "ext-dom": "*",
         "se7enxweb/ezpublish-legacy-installer": "*"
     },
+    "suggest": {
+        "ext-curl": "Needed to fetch feeds from a SOAP server addressed over https"
+    },
     "extra": {
-        "ezpublish-legacy-extension-name": "syndication"
+        "ezpublish-legacy-extension-name": "syndication",
+        "installer-name": "syndication"
     }
 }
