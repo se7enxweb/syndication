@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>Choose the node to export</source>
-        <translation>Wybierz węzeł do eksportu</translation>
+        <translation>Wybrać węzeł do eksportu</translation>
     </message>
     <message>
         <source>Select the node and click the Select button. The recent and bookmark items help to find a place quickly. Click a name to change the listing.</source>
@@ -65,7 +65,7 @@
     </message>
     <message>
         <source>Add a source to the feed "%name"</source>
-        <translation>Dodaj źródło do kanału „%name”</translation>
+        <translation>Dodać źródło do kanału „%name”</translation>
     </message>
     <message>
         <source>What does the source export?</source>
@@ -89,7 +89,7 @@
     </message>
     <message>
         <source>Save</source>
-        <translation>Zapisz</translation>
+        <translation>Zapisać</translation>
     </message>
     <message>
         <source>Edit feed: %name</source>
@@ -157,7 +157,7 @@
     </message>
     <message>
         <source>Remove</source>
-        <translation>Usuń</translation>
+        <translation>Usunąć</translation>
     </message>
     <message>
         <source>node %id is missing</source>
@@ -165,7 +165,7 @@
     </message>
     <message>
         <source>Edit filters</source>
-        <translation>Edytuj filtry</translation>
+        <translation>Edytować filtry</translation>
     </message>
     <message>
         <source>No source yet. A feed without a source exports nothing.</source>
@@ -173,11 +173,11 @@
     </message>
     <message>
         <source>Add a source</source>
-        <translation>Dodaj źródło</translation>
+        <translation>Dodać źródło</translation>
     </message>
     <message>
         <source>Remove selected sources</source>
-        <translation>Usuń zaznaczone źródła</translation>
+        <translation>Usunąć zaznaczone źródła</translation>
     </message>
     <message>
         <source>Remove the selected sources from this feed?</source>
@@ -185,7 +185,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <translation>Anulować</translation>
     </message>
     <message>
         <source>Edit a filter of the import "%name"</source>
@@ -281,7 +281,7 @@
     </message>
     <message>
         <source>Export now</source>
-        <translation>Eksportuj teraz</translation>
+        <translation>Wyeksportować teraz</translation>
     </message>
     <message>
         <source>The feed has no source</source>
@@ -289,7 +289,7 @@
     </message>
     <message>
         <source>Edit the feed</source>
-        <translation>Edytuj kanał</translation>
+        <translation>Edytować kanał</translation>
     </message>
     <message>
         <source>You may look at this feed but not change it.</source>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <source>Edit the attribute filter</source>
-        <translation>Edytuj filtr atrybutu</translation>
+        <translation>Edytować filtr atrybutu</translation>
     </message>
     <message>
         <source>Identifier of the content class attribute that must be filled</source>
@@ -357,7 +357,7 @@
     </message>
     <message>
         <source>Edit the section filter</source>
-        <translation>Edytuj filtr sekcji</translation>
+        <translation>Edytować filtr sekcji</translation>
     </message>
     <message>
         <source>Allowed section</source>
@@ -389,11 +389,11 @@
     </message>
     <message>
         <source>Finish</source>
-        <translation>Zakończ</translation>
+        <translation>Zakończyć</translation>
     </message>
     <message>
         <source>Leave</source>
-        <translation>Opuść</translation>
+        <translation>Opuścić</translation>
     </message>
     <message>
         <source>Enter the address of the SOAP server of the other site and, when it is protected, a login. The next step lists the feeds that site offers.</source>
@@ -409,7 +409,7 @@
     </message>
     <message>
         <source>Login</source>
-        <translation>Zaloguj</translation>
+        <translation>Zalogować</translation>
     </message>
     <message>
         <source>Password</source>
@@ -425,7 +425,7 @@
     </message>
     <message>
         <source>Choose the feed to import</source>
-        <translation>Wybierz kanał do importu</translation>
+        <translation>Wybrać kanał do importu</translation>
     </message>
     <message>
         <source>The other site offers no feed. Make sure a feed is active there, then go back and try again.</source>
@@ -445,7 +445,7 @@
     </message>
     <message>
         <source>Edit</source>
-        <translation>Edytuj</translation>
+        <translation>Edytować</translation>
     </message>
     <message>
         <source>No filter: every object of the feed is imported.</source>
@@ -457,11 +457,11 @@
     </message>
     <message>
         <source>Add filter</source>
-        <translation>Dodaj filtr</translation>
+        <translation>Dodać filtr</translation>
     </message>
     <message>
         <source>Remove selected filters</source>
-        <translation>Usuń zaznaczone filtry</translation>
+        <translation>Usunąć zaznaczone filtry</translation>
     </message>
     <message>
         <source>Import options</source>
@@ -477,7 +477,7 @@
     </message>
     <message>
         <source>Browse location</source>
-        <translation>Przeglądaj lokalizacje</translation>
+        <translation>Przeglądać lokalizacje</translation>
     </message>
     <message>
         <source>Location for related objects (images, files and so on)</source>
@@ -489,19 +489,19 @@
     </message>
     <message>
         <source>Import the objects automatically (otherwise they wait for approval)</source>
-        <translation>Importuj obiekty automatycznie (w przeciwnym razie oczekują na zatwierdzenie)</translation>
+        <translation>Zaimportować obiekty automatycznie (w przeciwnym razie oczekują na zatwierdzenie)</translation>
     </message>
     <message>
         <source>Exclude the top node</source>
-        <translation>Pomiń węzeł główny</translation>
+        <translation>Pominąć węzeł główny</translation>
     </message>
     <message>
         <source>Import related objects too</source>
-        <translation>Importuj także powiązane obiekty</translation>
+        <translation>Zaimportować także powiązane obiekty</translation>
     </message>
     <message>
         <source>Take over the hidden status of the exporting site</source>
-        <translation>Przejmij status ukrycia z witryny eksportującej</translation>
+        <translation>Przejąć status ukrycia z witryny eksportującej</translation>
     </message>
     <message>
         <source>The import is configured</source>
@@ -513,7 +513,7 @@
     </message>
     <message>
         <source>Import</source>
-        <translation>Zaimportuj</translation>
+        <translation>Zaimportować</translation>
     </message>
     <message>
         <source>imports automatically</source>
@@ -577,7 +577,7 @@
     </message>
     <message>
         <source>Fetch the item list now</source>
-        <translation>Pobierz teraz listę elementów</translation>
+        <translation>Pobrać teraz listę elementów</translation>
     </message>
     <message>
         <source>Import up to 10 pending or failed items now? New content objects are created.</source>
@@ -585,15 +585,15 @@
     </message>
     <message>
         <source>Import pending items now</source>
-        <translation>Importuj teraz oczekujące elementy</translation>
+        <translation>Zaimportować teraz oczekujące elementy</translation>
     </message>
     <message>
         <source>Edit the import</source>
-        <translation>Edytuj import</translation>
+        <translation>Edytować import</translation>
     </message>
     <message>
         <source>Edit waiting items</source>
-        <translation>Edytuj oczekujące elementy</translation>
+        <translation>Edytować oczekujące elementy</translation>
     </message>
     <message>
         <source>You may look at this import but not change it.</source>
@@ -633,7 +633,7 @@
     </message>
     <message>
         <source>Find an import</source>
-        <translation>Znajdź import</translation>
+        <translation>Znaleźć import</translation>
     </message>
     <message>
         <source>Name or server</source>
@@ -645,11 +645,11 @@
     </message>
     <message>
         <source>Clear</source>
-        <translation>Wyczyść</translation>
+        <translation>Wyczyścić</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>Zaznacz wszystko</translation>
+        <translation>Zaznaczyć wszystko</translation>
     </message>
     <message>
         <source>Active</source>
@@ -677,7 +677,7 @@
     </message>
     <message>
         <source>Select</source>
-        <translation>Wybierz</translation>
+        <translation>Wybrać</translation>
     </message>
     <message>
         <source>no name</source>
@@ -693,7 +693,7 @@
     </message>
     <message>
         <source>Remove selected</source>
-        <translation>Usuń zaznaczone</translation>
+        <translation>Usunąć zaznaczone</translation>
     </message>
     <message>
         <source>%count of %all imports</source>
@@ -705,7 +705,7 @@
     </message>
     <message>
         <source>Show all imports</source>
-        <translation>Pokaż wszystkie importy</translation>
+        <translation>Pokazać wszystkie importy</translation>
     </message>
     <message>
         <source>There is no import yet.</source>
@@ -729,7 +729,7 @@
     </message>
     <message>
         <source>Find a feed</source>
-        <translation>Znajdź kanał</translation>
+        <translation>Znaleźć kanał</translation>
     </message>
     <message>
         <source>Name, identifier or description</source>
@@ -749,7 +749,7 @@
     </message>
     <message>
         <source>Show all feeds</source>
-        <translation>Pokaż wszystkie kanały</translation>
+        <translation>Pokazać wszystkie kanały</translation>
     </message>
     <message>
         <source>There is no feed yet.</source>
@@ -789,7 +789,7 @@
     </message>
     <message>
         <source>Create the tables</source>
-        <translation>Utwórz tabele</translation>
+        <translation>Utworzyć tabele</translation>
     </message>
     <message>
         <source>The tables are created from the extension's own schema file, on every database Exponential supports. Existing tables are not touched.</source>
@@ -841,7 +841,7 @@
     </message>
     <message>
         <source>Run now</source>
-        <translation>Uruchom teraz</translation>
+        <translation>Uruchomić teraz</translation>
     </message>
     <message>
         <source>The cronjob parts do this on a schedule. Here you can run them by hand.</source>
@@ -853,7 +853,7 @@
     </message>
     <message>
         <source>Export all active feeds</source>
-        <translation>Eksportuj wszystkie aktywne kanały</translation>
+        <translation>Wyeksportować wszystkie aktywne kanały</translation>
     </message>
     <message>
         <source>Fetch the item list of every active import now?</source>
@@ -861,7 +861,7 @@
     </message>
     <message>
         <source>Fetch all active imports</source>
-        <translation>Pobierz wszystkie aktywne importy</translation>
+        <translation>Pobrać wszystkie aktywne importy</translation>
     </message>
     <message>
         <source>In cron:</source>
@@ -885,7 +885,7 @@
     </message>
     <message>
         <source>Open</source>
-        <translation>Otwórz</translation>
+        <translation>Otworzyć</translation>
     </message>
     <message>
         <source>Nothing to report: every feed has a source, every import has a server, a feed and a location, and no item failed.</source>
@@ -909,7 +909,7 @@
     </message>
     <message>
         <source>Approve all that can be changed</source>
-        <translation>Zatwierdź wszystkie, które można zmienić</translation>
+        <translation>Zatwierdzić wszystkie, które można zmienić</translation>
     </message>
     <message>
         <source>Original</source>
@@ -925,7 +925,7 @@
     </message>
     <message>
         <source>Approve</source>
-        <translation>Zatwierdź</translation>
+        <translation>Zatwierdzić</translation>
     </message>
     <message>
         <source>open</source>
@@ -937,7 +937,7 @@
     </message>
     <message>
         <source>Save the changes</source>
-        <translation>Zapisz zmiany</translation>
+        <translation>Zapisać zmiany</translation>
     </message>
     <message>
         <source>Back to the import</source>
@@ -1065,7 +1065,7 @@
     </message>
     <message>
         <source>Please enter valid Name</source>
-        <translation>Wprowadź prawidłową nazwę</translation>
+        <translation>Wprowadzić prawidłową nazwę</translation>
     </message>
     <message>
         <source>Warning, SOAP feed list request to "%server" did not return a valid result #2</source>
