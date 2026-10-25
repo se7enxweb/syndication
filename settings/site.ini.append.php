@@ -4,7 +4,7 @@
 ## ExtensionAutoloadPath[]=syndication
 
 [RegionalSettings]
-TranslationExtension[]=syndication
+TranslationExtensions[]=syndication
 
 
 */ ?>
