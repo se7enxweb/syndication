@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.14 (2026-10-29)
+
+- Updated: The SOAP server of Exponential is `index_soap.php` since Exponential 6.0.15 (`soap.php` before, a forwarding shim since). The dashboard and a feed's page show the address of the site's SOAP server, `index_soap.php` when the kernel has it and `soap.php` on an older kernel (`eZSyndicationUI::soapEntryScript()`, `soapURL()`). The import wizard gives `https://example.com/index_soap.php` as the example, in every translation. An import that calls an exporting site on 6.0.15 or later should name `index_soap.php`; `soap.php` keeps answering there until a later major version. An exporting site on 6.0.14 or older is still called at `soap.php`.
+- Updated: README: the SOAP server's address by kernel release, what the exporting site's web server must let through, the upgrade step for existing imports, and a `curl` check in the troubleshooting table.
+- Updated: extension.xml states the release in both of its version fields (the second still said 1.3.11).
+
 ## 1.3.13 (2026-10-28)
 
 - Updated: The translations of syndication are loaded.
