@@ -11,7 +11,7 @@
  *  JB-02 - a job of another user is refused, its owner may read it
  *  JB-03 - a job written before the owner was stored (no user_id) is refused
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package tests
  */

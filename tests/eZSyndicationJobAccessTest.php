@@ -9,7 +9,7 @@
  *  JA-02 - syndication/job asks eZSyndicationJob::accessible() before it reads the job
  *  JA-03 - start() stores the user id, and the export and import commands keep it when they write the state again
  *
- * @copyright Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package tests
  */

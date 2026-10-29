@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+// Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
 // Copyright (C) 1999-2008 eZ Systems AS. All rights reserved.
 //
 // This file may be distributed and/or modified under the terms of the

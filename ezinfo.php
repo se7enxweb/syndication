@@ -4,7 +4,7 @@
 //
 // Created on: <12-Apr-2007 17:02:22 hovik>
 //
-// Copyright (C) 1998 - 2026 7x & Exponential Foundation. All rights reserved.
+// Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
 // Copyright (C) 1999-2008 eZ Systems AS. All rights reserved.
 //
 // This source file is part of the eZ Publish (tm) Open Source Content
@@ -45,7 +45,7 @@ class syndicationInfo
     {
         return array( 'Name' => "<a href='https://github.com/se7enxweb/syndication'>Syndication</a>",
                       'Version' => "1.3.15",
-                      'Copyright' => "Copyright © 1998 - 2026 7x and the Exponential Foundation, 1999 - 2008 eZ Systems AS",
+                      'Copyright' => "Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved. Copyright (C) 1999 - 2008 eZ Systems AS",
                       'License' => "GNU General Public License v2.0 (or any later version)",
                       'Info_url' => "https://github.com/se7enxweb/syndication");
     }
