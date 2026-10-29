@@ -70,6 +70,32 @@ class eZSyndicationUI
 
     /*!
      \static
+     The file name of this installation's SOAP server: index_soap.php since Exponential 6.0.15, soap.php on an older
+     kernel (where index_soap.php does not exist). On 6.0.15 and later soap.php is only a forwarding shim.
+
+     \param string|null $rootDir the installation root, the current one when null
+     \return string
+    */
+    static function soapEntryScript( $rootDir = null )
+    {
+        if ( $rootDir === null )
+        {
+            $rootDir = eZSys::rootDir();
+        }
+        return is_file( rtrim( (string)$rootDir, '/' ) . '/index_soap.php' ) ? 'index_soap.php' : 'soap.php';
+    }
+
+    /*!
+     \static
+     The address of this installation's SOAP server, the one an importing site enters as its server.
+    */
+    static function soapURL()
+    {
+        return eZSys::serverURL() . eZSys::wwwDir() . '/' . self::soapEntryScript();
+    }
+
+    /*!
+     \static
      A view that needs the tables sends the user to the start page, which offers to create them.
 
      \return the module's redirect result, false when the tables exist

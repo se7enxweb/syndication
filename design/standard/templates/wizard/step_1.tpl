@@ -4,7 +4,7 @@
 {include uri="design:gui/lineedit.tpl" id_name=Name value=$syndication_import.name|wash}
 <br/>
 
-<label>{"Server ( example : http://ez.no/soap.php )"|i18n("design/standard/syndication/edit")}:</label><div class="labelbreak"></div>
+<label>{'Server (example: https://example.com/index_soap.php)'|i18n( 'extension/syndication' )}:</label><div class="labelbreak"></div>
 {include uri="design:gui/lineedit.tpl" id_name=Server value=$syndication_import.server|wash}
 <br/>
 

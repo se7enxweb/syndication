@@ -400,8 +400,8 @@
         <translation>Inserisci l'indirizzo del server SOAP dell'altro sito e, se è protetto, un login. Il passo successivo elenca i feed offerti da quel sito.</translation>
     </message>
     <message>
-        <source>Server (example: https://example.com/soap.php)</source>
-        <translation>Server (esempio: https://example.com/soap.php)</translation>
+        <source>Server (example: https://example.com/index_soap.php)</source>
+        <translation>Server (esempio: https://example.com/index_soap.php)</translation>
     </message>
     <message>
         <source>A user name and password inside the address are not shown again; use the fields below instead.</source>

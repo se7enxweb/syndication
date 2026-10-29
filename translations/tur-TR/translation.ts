@@ -400,8 +400,8 @@
         <translation>Diğer sitenin SOAP sunucusunun adresini ve korunuyorsa bir oturum açma bilgisini girin. Sonraki adım o sitenin sunduğu akışları listeler.</translation>
     </message>
     <message>
-        <source>Server (example: https://example.com/soap.php)</source>
-        <translation>Sunucu (örnek: https://example.com/soap.php)</translation>
+        <source>Server (example: https://example.com/index_soap.php)</source>
+        <translation>Sunucu (örnek: https://example.com/index_soap.php)</translation>
     </message>
     <message>
         <source>A user name and password inside the address are not shown again; use the fields below instead.</source>

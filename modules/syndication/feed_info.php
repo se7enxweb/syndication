@@ -80,7 +80,7 @@ $tpl->setVariable( 'item_count', $itemCount );
 $tpl->setVariable( 'limit', $limit );
 $tpl->setVariable( 'view_parameters', array( 'offset' => $offset ) );
 $tpl->setVariable( 'can_edit', $canEdit );
-$tpl->setVariable( 'soap_url', eZSys::serverURL() . eZSys::wwwDir() . '/soap.php' );
+$tpl->setVariable( 'soap_url', eZSyndicationUI::soapURL() );
 $tpl->setVariable( 'soap_enabled', eZINI::instance( 'soap.ini' )->variable( 'GeneralSettings', 'EnableSOAP' ) == 'true' );
 $tpl->setVariable( 'last_run', eZSyndicationRunner::lastRun( eZSyndicationRunner::LAST_EXPORT ) );
 $tpl->setVariable( 'notices', eZSyndicationUI::takeNotices() );

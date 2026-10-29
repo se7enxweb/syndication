@@ -400,8 +400,8 @@
         <translation>Unesite adresu SOAP poslužitelja drugog web-mjesta i, ako je zaštićen, podatke za prijavu. Sljedeći korak prikazuje sažetke koje to web-mjesto nudi.</translation>
     </message>
     <message>
-        <source>Server (example: https://example.com/soap.php)</source>
-        <translation>Poslužitelj (primjer: https://example.com/soap.php)</translation>
+        <source>Server (example: https://example.com/index_soap.php)</source>
+        <translation>Poslužitelj (primjer: https://example.com/index_soap.php)</translation>
     </message>
     <message>
         <source>A user name and password inside the address are not shown again; use the fields below instead.</source>

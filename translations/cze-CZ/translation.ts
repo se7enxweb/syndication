@@ -400,8 +400,8 @@
         <translation>Zadejte adresu SOAP serveru druhého webu a, pokud je chráněný, přihlašovací údaje. Další krok zobrazí kanály, které tento web nabízí.</translation>
     </message>
     <message>
-        <source>Server (example: https://example.com/soap.php)</source>
-        <translation>Server (příklad: https://example.com/soap.php)</translation>
+        <source>Server (example: https://example.com/index_soap.php)</source>
+        <translation>Server (příklad: https://example.com/index_soap.php)</translation>
     </message>
     <message>
         <source>A user name and password inside the address are not shown again; use the fields below instead.</source>

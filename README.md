@@ -40,13 +40,13 @@ the console, and from two cronjob parts.
  exporting site                                        importing site
  --------------                                        --------------
  feed "news"                                           import "Partner news"
-   source: subtree /News        cronjob export_feed      server: https://export.example.com/soap.php
+   source: subtree /News        cronjob export_feed      server: https://export.example.com/index_soap.php
    filters (section, attribute) ------------------>      feed:   news
           |                     writes an XML cache      filters, placement, options
           v                     per object                       |
  var/<site>/storage/syndication/feed/...                         | cronjob import_feed
           ^                                                      |  1. fetch the item list (SOAP)
-          |              SOAP functions of soap.php              |  2. import the waiting items
+          |           SOAP functions of index_soap.php           |  2. import the waiting items
           +------------------------------------------------------+
 ```
 
@@ -56,8 +56,9 @@ the console, and from two cronjob parts.
    and binary files).
 3. The extension registers SOAP functions (`fetchSyndicationFeedList`, `fetchSyndicationFeedItemList`,
    `fetchSyndicationFeedContentObject`, `fetchSyndicationFeedRelatedContentObject`, `hostID` and
-   `fetchSyndicationFeedObjectList`) in the site's `soap.php`.
-4. On the importing site you create an **import**: the address of the other site's `soap.php`, the feed to take, the
+   `fetchSyndicationFeedObjectList`) in the site's SOAP server, `index_soap.php` (`soap.php` before Exponential
+   6.0.15).
+4. On the importing site you create an **import**: the address of the other site's SOAP server, the feed to take, the
    location where the objects go, optional import filters and options.
 5. The cronjob part `import_feed` fetches the list of new or changed items and imports them, either at once
    (automatic import) or after an editor approves them.
@@ -66,7 +67,8 @@ the console, and from two cronjob parts.
 
 - Exponential 6.x (the legacy kernel) on **both** sites, each with this extension active
 - PHP 8.0 or newer with the `dom` extension; `curl` when the exporting site is addressed over `https://`
-- SOAP enabled on the exporting site (the extension's `soap.ini` does this, see [Configuration](#configuration))
+- SOAP enabled on the exporting site (the extension's `soap.ini` does this, see [Configuration](#configuration)),
+  and its web server letting the SOAP server through (see [The SOAP server's address](#the-soap-servers-address))
 - MySQL / MariaDB or PostgreSQL (the tables come from `share/db_schema.dba`; `sql/mysql.sql` is the MySQL dump)
 - Shell access for the cronjobs
 
@@ -154,8 +156,29 @@ EnableSOAP=true
 SOAPExtensions[]=syndication
 ```
 
-If `soap.php` of the exporting site is protected (for example by HTTP authentication), enter the login and password
-in the first step of the import wizard.
+If the SOAP server of the exporting site is protected (for example by HTTP authentication), enter the login and
+password in the first step of the import wizard.
+
+### The SOAP server's address
+
+The SOAP server of an Exponential installation is `index_soap.php` since Exponential 6.0.15; before, it was
+`soap.php`. On 6.0.15 and later `soap.php` still answers, as a shim that forwards to `index_soap.php` and writes a
+notice to `var/log/warning.log` once a day, and it will be removed in a later major version.
+
+| Exporting site runs | Address an import uses |
+| --- | --- |
+| Exponential 6.0.15 or later | `https://export.example.com/index_soap.php` |
+| Exponential 6.0.14 or older | `https://export.example.com/soap.php` |
+
+The dashboard and a feed's page show the address of the site you are on: `index_soap.php` when the kernel has it,
+`soap.php` on an older kernel. Imports created before keep the address they were given; change them to
+`index_soap.php` once the exporting site runs 6.0.15 (edit the import, step 1).
+
+The exporting site's web server must let `index_soap.php` through: with the kernel's `.htaccess_root`, uncomment
+`RewriteRule ^index_soap\.php - [L]`; in an nginx server block add a `location = /index_soap.php` that hands it to
+PHP-FPM. The kernel's documentation page "The SOAP entry script is now index_soap.php"
+(`doc/eng-us/bc/6.0/soap-entry-script-index-soap.md`) has the lines for Apache, Plesk, nginx and the other servers
+and a test with `curl`.
 
 ### browse.ini
 
@@ -205,7 +228,8 @@ On the importing site:
 
 1. **Syndication > Imports > New import**.
 2. **Step 1**: a name and the address of the other site's SOAP server, for example
-   `https://export.example.com/soap.php`, plus a login and password when it is protected.
+   `https://export.example.com/index_soap.php` (`.../soap.php` when that site runs Exponential 6.0.14 or older), plus
+   a login and password when it is protected.
 3. **Step 2**: choose one of the feeds the other site offers. An empty list means that site has no active feed.
 4. **Step 3**: import filters (optional). Without a filter every object of the feed is imported; with filters, an
    object is imported when one of them accepts it.
@@ -293,7 +317,10 @@ Creating the tables from the dashboard needs both `edit_export` and `edit_import
    `extension/syndication`).
 2. Regenerate the autoloads and clear the caches (see [Installation](#installation)).
 3. Run `./console ext:syndication:install --dry-run`; if it lists missing tables, run it without `--dry-run`.
-4. Read [CHANGELOG.md](CHANGELOG.md) for what changed.
+4. When the exporting site moves to Exponential 6.0.15 or later, let `index_soap.php` through at its web server and
+   change the server address of each import on the importing sites to `.../index_soap.php` (see
+   [The SOAP server's address](#the-soap-servers-address)). `soap.php` keeps answering until then.
+5. Read [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ## Known limits
 
@@ -313,7 +340,7 @@ Creating the tables from the dashboard needs both `edit_export` and `edit_import
 | --- | --- |
 | The tab is missing | The extension is in `ActiveExtensions[]`, the caches are cleared, the user has the `syndication/menu` policy |
 | The dashboard says the tables are missing | Run `./console ext:syndication:install` |
-| "SOAP feed list request ... did not return a valid result" in the import wizard | The address points to `soap.php`, SOAP is on at the exporting site (the dashboard shows **SOAP on**), the login is right, `curl` is loaded for `https://` |
+| "SOAP feed list request ... did not return a valid result" in the import wizard | The address points to the SOAP server (`index_soap.php`, or `soap.php` on Exponential 6.0.14 and older), the exporting site's web server lets it through (`curl -i https://export.example.com/index_soap.php` answers "only understand POST methods", not 404 or a page), SOAP is on at the exporting site (the dashboard shows **SOAP on**), the login is right, `curl` is loaded for `https://` |
 | Step 2 of the import wizard lists no feed | The exporting site has no **active** feed |
 | Items stay waiting | **Import the objects automatically** is off: approve them on the pending page, or turn it on |
 | Items fail | The import's page lists them; check that `CronUser` can create objects in the chosen locations |

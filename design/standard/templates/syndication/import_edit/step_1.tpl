@@ -6,7 +6,7 @@
     <input id="syn-import-name" class="halfbox" type="text" name="Name" value="{$imp.name|wash}" maxlength="255" />
 </div>
 <div class="block">
-    <label for="syn-import-server">{'Server (example: https://example.com/soap.php)'|i18n( 'extension/syndication' )}</label>
+    <label for="syn-import-server">{'Server (example: https://example.com/index_soap.php)'|i18n( 'extension/syndication' )}</label>
     <input id="syn-import-server" class="halfbox" type="text" name="Server" value="{$imp.server|wash}" spellcheck="false" autocomplete="off" />
     <p class="syn-hint">{'A user name and password inside the address are not shown again; use the fields below instead.'|i18n( 'extension/syndication' )}</p>
 </div>

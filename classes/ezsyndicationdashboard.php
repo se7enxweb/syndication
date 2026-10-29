@@ -27,7 +27,7 @@ class eZSyndicationDashboard
         $soapIni = eZINI::instance( 'soap.ini' );
         $summary['soap'] = array( 'enabled' => $soapIni->variable( 'GeneralSettings', 'EnableSOAP' ) == 'true',
                                   'extension' => in_array( 'syndication', (array)$soapIni->variable( 'ExtensionSettings', 'SOAPExtensions' ), true ),
-                                  'url' => eZSys::serverURL() . eZSys::wwwDir() . '/soap.php' );
+                                  'url' => eZSyndicationUI::soapURL() );
 
         if ( $summary['tables_missing'] )
         {
