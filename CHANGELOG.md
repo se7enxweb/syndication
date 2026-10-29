@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.17 (2026-10-29)
+
+- Updated: Both version fields of extension.xml name the release.
+
 ## 1.3.16 (2026-10-29)
 
 - Updated: One copyright notice, Exponential Foundation and 7x.
