@@ -9,6 +9,8 @@
  *  SE-01 - eZSyndicationUI::soapEntryScript() is index_soap.php where it exists, soap.php otherwise
  *  SE-02 - the dashboard and the feed page take the address from eZSyndicationUI::soapURL()
  *  SE-03 - the templates and the translations give index_soap.php as the example, never soap.php
+ *  SE-04 - eZSyndicationUI::soapFallbackServer() turns an address with index_soap.php into one with soap.php
+ *  SE-05 - the import wizard tries soap.php once when index_soap.php gives no feed list, and keeps it if it answers
  *
  * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
@@ -76,5 +78,34 @@ class eZSyndicationSoapEntryScriptTest extends TestCase
         }
         $this->assertStringContainsString( "'Server (example: https://example.com/index_soap.php)'|i18n( 'extension/syndication' )",
                                            (string)file_get_contents( $root . '/design/standard/templates/syndication/import_edit/step_1.tpl' ) );
+    }
+
+    /** SE-04 */
+    public function testTheFallbackAddressNamesSoapPhp()
+    {
+        $cases = array(
+            'https://export.example.com/index_soap.php' => 'https://export.example.com/soap.php',
+            'https://export.example.com/sub/dir/index_soap.php' => 'https://export.example.com/sub/dir/soap.php',
+            'https://user:secret@export.example.com:8443/index_soap.php?x=1' => 'https://user:secret@export.example.com:8443/soap.php?x=1',
+            'http://index_soap.php.example.com/index_soap.php' => 'http://index_soap.php.example.com/soap.php',
+        );
+        foreach ( $cases as $server => $fallback )
+            $this->assertSame( $fallback, eZSyndicationUI::soapFallbackServer( $server ), $server );
+
+        foreach ( array( 'https://export.example.com/soap.php', 'https://export.example.com/', 'https://export.example.com',
+                         'https://export.example.com/my_index_soap.php', 'https://export.example.com/index_soap.php/x',
+                         'not an address', '' ) as $server )
+            $this->assertFalse( eZSyndicationUI::soapFallbackServer( $server ), $server );
+    }
+
+    /** SE-05 */
+    public function testTheWizardFallsBackToSoapPhp()
+    {
+        $source = (string)file_get_contents( dirname( __DIR__ ) . '/modules/syndication/import_edit/ezimporteditname.php' );
+        $this->assertStringContainsString( 'eZSyndicationUI::soapFallbackServer( $server )', $source );
+        $this->assertStringContainsString( '!self::isFeedListResponse( $response )', $source );
+        $this->assertStringContainsString( "\$syndicationImport->setAttribute( 'server', \$fallbackServer );", $source );
+        // the address typed is put back when soap.php does not answer either
+        $this->assertStringContainsString( "\$syndicationImport->setAttribute( 'server', \$server );", $source );
     }
 }

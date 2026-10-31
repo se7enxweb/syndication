@@ -174,6 +174,11 @@ The dashboard and a feed's page show the address of the site you are on: `index_
 `soap.php` on an older kernel. Imports created before keep the address they were given; change them to
 `index_soap.php` once the exporting site runs 6.0.15 (edit the import, step 1).
 
+If you enter an address with `index_soap.php` and nothing answers there with a feed list, step 1 of the import wizard
+tries the same address with `soap.php` once. When that answers (the exporting site runs 6.0.14 or older), the import
+keeps the `soap.php` address; change it to `index_soap.php` when that site is upgraded. When neither answers, the
+wizard keeps the address you entered and shows the usual warning.
+
 The exporting site's web server must let `index_soap.php` through: with the kernel's `.htaccess_root`, uncomment
 `RewriteRule ^index_soap\.php - [L]`; in an nginx server block add a `location = /index_soap.php` that hands it to
 PHP-FPM. The kernel's documentation page "The SOAP entry script is now index_soap.php"

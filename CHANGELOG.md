@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.18 (2026-10-30)
+
+- Updated: The import wizard falls back to `soap.php`. When the server address names `index_soap.php` and no feed list comes back, step 1 tries the same address with `soap.php` once (the SOAP server of an exporting site on Exponential 6.0.14 or older) and keeps that address when it answers; otherwise the address entered stays and the usual warning is shown (`eZSyndicationUI::soapFallbackServer()`).
+- Updated: Tests SE-04 and SE-05 cover the fallback address and the wizard's use of it; the README describes it.
+
 ## 1.3.17 (2026-10-29)
 
 - Updated: Both version fields of extension.xml name the release.

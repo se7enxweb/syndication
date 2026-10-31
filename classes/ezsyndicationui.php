@@ -96,6 +96,34 @@ class eZSyndicationUI
 
     /*!
      \static
+     The address to try when an import's server address names index_soap.php and nothing answers there: the same
+     address with soap.php, the name of the SOAP server on an exporting site that runs Exponential 6.0.14 or older
+     (index_soap.php does not exist there, so the request ends at its index.php). Credentials, port and query stay
+     as they are.
+
+     \param string $server the server address of an import
+     \return string|false the address with soap.php, false when the address does not end in /index_soap.php
+    */
+    static function soapFallbackServer( $server )
+    {
+        $server = (string)$server;
+        $url = parse_url( $server );
+        if ( !is_array( $url ) || !isset( $url['host'], $url['path'] )
+             || !preg_match( '#(^|/)index_soap\.php$#', $url['path'] ) )
+        {
+            return false;
+        }
+        $at = strpos( $server, $url['path'], strpos( $server, $url['host'] ) + strlen( $url['host'] ) );
+        if ( $at === false )
+        {
+            return false;
+        }
+        return substr( $server, 0, $at ) . substr( $url['path'], 0, -strlen( 'index_soap.php' ) ) . 'soap.php'
+               . substr( $server, $at + strlen( $url['path'] ) );
+    }
+
+    /*!
+     \static
      A view that needs the tables sends the user to the start page, which offers to create them.
 
      \return the module's redirect result, false when the tables exist

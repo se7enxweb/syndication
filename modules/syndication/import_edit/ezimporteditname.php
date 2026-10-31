@@ -109,6 +109,31 @@ class eZImportEditName extends eZImportEditWizard
         $request = new eZSOAPRequest( "fetchSyndicationFeedList", "http://ez.no/syndication" );
         $response = $client->send( $request );
 
+        // An exporting site on Exponential 6.0.14 or older has no index_soap.php (its SOAP server is soap.php), so an
+        // address that names index_soap.php ends at that site's index.php. Try soap.php once, and keep that address
+        // when it answers with a feed list.
+        $fallbackServer = eZSyndicationUI::soapFallbackServer( $server );
+        if ( $fallbackServer !== false && !self::isFeedListResponse( $response ) )
+        {
+            $syndicationImport->setAttribute( 'server', $fallbackServer );
+            $fallbackClient = $syndicationImport->attribute( 'soap_client' );
+            $fallbackResponse = $fallbackClient->send( $request );
+            if ( self::isFeedListResponse( $fallbackResponse ) )
+            {
+                eZDebug::writeNotice( 'No SOAP server answered at index_soap.php, soap.php did (an exporting site on '
+                                      . 'Exponential 6.0.14 or older): the import keeps the address with soap.php',
+                                      __METHOD__ );
+                $server = $fallbackServer;
+                $client = $fallbackClient;
+                $response = $fallbackResponse;
+                $syndicationImport->sync();
+            }
+            else
+            {
+                $syndicationImport->setAttribute( 'server', $server );
+            }
+        }
+
 	if( !is_int( $response ) )
 	{
            $responseCode = $response->faultCode();
@@ -147,6 +172,17 @@ class eZImportEditName extends eZImportEditWizard
         $syndicationImport->sync();
 
         return $valid;
+    }
+
+    /*!
+     \static
+     Whether the answer to fetchSyndicationFeedList is a feed list: a SOAP response without a fault and with a value.
+     eZSOAPClient::send() returns an int when the request failed.
+    */
+    static function isFeedListResponse( $response )
+    {
+        return is_object( $response ) && $response->faultCode() === false
+               && $response->value() !== false && $response->value() !== '';
     }
 }
 
