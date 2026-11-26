@@ -12,7 +12,7 @@
  *  SE-04 - eZSyndicationUI::soapFallbackServer() turns an address with index_soap.php into one with soap.php
  *  SE-05 - the import wizard tries soap.php once when index_soap.php gives no feed list, and keeps it if it answers
  *
- * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x. All rights reserved.
+ * @copyright Copyright (C) 1998 - 2026 Exponential Foundation and 7x; All rights reserved.
  * @license GNU General Public License v2.0 (or any later version)
  * @package tests
  */
